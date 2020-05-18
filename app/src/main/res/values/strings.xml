@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">crimson</string>
+    <string name="title_activity_landing">crimson - home</string>
+    <string name="title_quotes">Quotes</string>
+    <string name="title_books">Books</string>
+    <string name="title_statistics">Statistics</string>
 </resources>
