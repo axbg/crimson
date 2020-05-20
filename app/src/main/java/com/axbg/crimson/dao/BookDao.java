@@ -18,8 +18,8 @@ public interface BookDao {
     @Query("SELECT * FROM books WHERE title LIKE '%' || :title || '%' ORDER BY id DESC")
     List<BookEntity> getByTitle(String title);
 
-    @Query("SELECT * FROM books ORDER BY id DESC LIMIT 20 OFFSET (20 * :page)")
-    List<BookEntity> getPage(int page);
+    @Query("SELECT * FROM books ORDER BY id DESC LIMIT :pageSize OFFSET (:pageSize * (:page -1))")
+    List<BookEntity> getPage(int page, int pageSize);
 
     @Query("SELECT COUNT(id) FROM books WHERE finished = :status")
     int countByFinishedStatus(boolean status);

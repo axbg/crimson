@@ -30,8 +30,8 @@ public class BookEntity {
 
     @NonNull
     @TypeConverters(Converters.class)
-    @ColumnInfo(name = "started_at")
-    private LocalDate startedAt;
+    @ColumnInfo(name = "added_at")
+    private LocalDate addedAt;
 
     private boolean finished = false;
 

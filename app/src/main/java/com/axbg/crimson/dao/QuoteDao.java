@@ -18,8 +18,11 @@ public interface QuoteDao {
     @Query("SELECT * FROM quotes WHERE text LIKE '%' || :text || '%'")
     List<QuoteEntity> getByText(String text);
 
-    @Query("SELECT * FROM quotes ORDER BY id DESC LIMIT 50 OFFSET (50 * (:page - 1))")
-    List<QuoteEntity> getPage(int page);
+    @Query("SELECT * FROM quotes ORDER BY id DESC LIMIT :pageSize OFFSET (:pageSize * (:page - 1))")
+    List<QuoteEntity> getPage(int page, int pageSize);
+
+    @Query("SELECT * FROM quotes WHERE book_id = :id")
+    List<QuoteEntity> getByBookId(long id);
 
     @Query("SELECT COUNT(id) FROM quotes")
     int count();
