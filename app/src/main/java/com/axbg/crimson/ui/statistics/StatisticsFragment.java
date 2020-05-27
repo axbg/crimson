@@ -20,9 +20,9 @@ public class StatisticsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         statisticsViewModel = new ViewModelProvider(this).get(StatisticsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_quotes, container, false);
+        View root = inflater.inflate(R.layout.fragment_statistics, container, false);
 
-        final TextView textView = root.findViewById(R.id.text_dashboard);
+        final TextView textView = root.findViewById(R.id.text_statistics);
 
         statisticsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
