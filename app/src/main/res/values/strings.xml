@@ -4,4 +4,7 @@
     <string name="title_quotes">Quotes</string>
     <string name="title_books">Books</string>
     <string name="title_statistics">Statistics</string>
+    <string name="TEXT_PLACEHOLDER">Text Placeholder</string>
+    <string name="DATE_PLACEHOLDER">DD/MM/YYYY</string>
+    <string name="QUOTES_TITLE">Favorite Quotes</string>
 </resources>

@@ -4,6 +4,10 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.axbg.crimson.db.entity.QuoteEntity;
+
+import java.util.List;
+
 public class BooksViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;

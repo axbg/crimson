@@ -4,31 +4,30 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.axbg.crimson.R;
+import com.axbg.crimson.db.entity.QuoteEntity;
+import com.axbg.crimson.ui.quotes.QuotesAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BooksFragment extends androidx.fragment.app.Fragment {
 
-    private BooksViewModel booksViewModel;
-
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        booksViewModel = new ViewModelProvider(this).get(BooksViewModel.class);
         View root = inflater.inflate(R.layout.fragment_books, container, false);
 
         final TextView textView = root.findViewById(R.id.text_books);
-        booksViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        textView.setText("Books Fragment");
 
         return root;
     }

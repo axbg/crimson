@@ -42,4 +42,8 @@ public class QuoteEntity {
     @NonNull
     @ColumnInfo(name = "book_id")
     private long bookId;
+
+    public String getShortText() {
+        return this.text.length() > 300 ? this.text.substring(0, 300) + "..." : this.text;
+    }
 }
