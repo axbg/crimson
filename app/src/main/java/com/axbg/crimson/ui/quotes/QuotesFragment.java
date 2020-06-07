@@ -29,7 +29,6 @@ public class QuotesFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_quotes, container, false);
 
         quotes = quotesViewModel.getQuotes();
-
         return root;
     }
 
@@ -52,7 +51,6 @@ public class QuotesFragment extends Fragment {
 
     private void bindListView() {
         quotesAdapter = new QuotesAdapter(quotes, R.layout.adapter_quotes, requireContext());
-
         ListView quotesListView = requireView().findViewById(R.id.quotes_listview);
         quotesListView.setAdapter(quotesAdapter);
     }

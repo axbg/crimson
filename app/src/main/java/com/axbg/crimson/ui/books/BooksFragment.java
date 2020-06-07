@@ -4,31 +4,28 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.GridView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.axbg.crimson.R;
-import com.axbg.crimson.db.entity.QuoteEntity;
-import com.axbg.crimson.ui.quotes.QuotesAdapter;
+import com.axbg.crimson.db.entity.BookEntity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class BooksFragment extends androidx.fragment.app.Fragment {
+    private List<BookEntity> books;
+    private BooksAdapter booksAdapter;
+    private BooksViewModel booksViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        booksViewModel = new ViewModelProvider(this).get(BooksViewModel.class);
         View root = inflater.inflate(R.layout.fragment_books, container, false);
 
-        final TextView textView = root.findViewById(R.id.text_books);
-        textView.setText("Books Fragment");
-
+        this.books = booksViewModel.getBooks();
         return root;
     }
 
@@ -36,6 +33,7 @@ public class BooksFragment extends androidx.fragment.app.Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         bindAddBookButton();
+        bindGridView();
     }
 
     private void bindAddBookButton() {
@@ -46,5 +44,11 @@ public class BooksFragment extends androidx.fragment.app.Fragment {
                 // open BookEditActivity
             }
         });
+    }
+
+    private void bindGridView() {
+        booksAdapter = new BooksAdapter(books, R.layout.adapter_books, requireContext());
+        GridView booksGridView = requireView().findViewById(R.id.books_grid_view);
+        booksGridView.setAdapter(booksAdapter);
     }
 }

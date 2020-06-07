@@ -7,4 +7,6 @@
     <string name="TEXT_PLACEHOLDER">Text Placeholder</string>
     <string name="DATE_PLACEHOLDER">DD/MM/YYYY</string>
     <string name="QUOTES_TITLE">Favorite Quotes</string>
+    <string name="BOOKS_TITLE">Favorite Books</string>
+    <string name="BOOK_COVER_ALT">Book Cover</string>
 </resources>
