@@ -9,6 +9,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Getter;
+
+@Getter
 public class BooksViewModel extends ViewModel {
 
     private List<BookEntity> books;
@@ -27,9 +30,5 @@ public class BooksViewModel extends ViewModel {
         books.add(new BookEntity("Title2", "Author2", LocalDate.now(), String.valueOf(R.drawable.cover_sample)));
         books.add(new BookEntity("Title3", "Author3", LocalDate.now(), String.valueOf(R.drawable.cover_sample)));
         books.add(new BookEntity("Title4", "Author4", LocalDate.now(), String.valueOf(R.drawable.cover_sample)));
-    }
-
-    public List<BookEntity> getBooks() {
-        return this.books;
     }
 }

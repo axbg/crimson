@@ -1,19 +1,16 @@
 package com.axbg.crimson.ui.statistics;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class StatisticsViewModel extends ViewModel {
+import lombok.Getter;
 
-    private MutableLiveData<String> mText;
+@Getter
+public class StatisticsViewModel extends ViewModel {
+    private int quotesNumber = 0;
+    private int booksNumber = 0;
+    private int quotesRatio = 0;
 
     public StatisticsViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is statistics fragment");
-    }
-
-    public LiveData<String> getText() {
-        return mText;
+        //populate with db data
     }
 }

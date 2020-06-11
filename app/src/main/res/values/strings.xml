@@ -9,4 +9,10 @@
     <string name="QUOTES_TITLE">Favorite Quotes</string>
     <string name="BOOKS_TITLE">Favorite Books</string>
     <string name="BOOK_COVER_ALT">Book Cover</string>
+    <string name="STATISTICS_TITLE">Statistics</string>
+    <string name="STATISTICS_QUOTES_NO">Quotes</string>
+    <string name="STATISTICS_BOOKS_NO">Books</string>
+    <string name="QUOTES_RATE_NO">Quotes/Book</string>
+    <string name="STATISTICS_QUOTES_RATE_NO">Quotes / Book</string>
+    <string name="NUMBER_PLACEHOLDER">0</string>
 </resources>

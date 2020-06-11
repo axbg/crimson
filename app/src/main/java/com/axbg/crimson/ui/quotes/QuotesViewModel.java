@@ -8,6 +8,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Getter;
+
+@Getter
 public class QuotesViewModel extends ViewModel {
     private List<QuoteEntity> quotes;
 
@@ -21,9 +24,5 @@ public class QuotesViewModel extends ViewModel {
         quotes.add(new QuoteEntity("Quote5", LocalDate.now(), 1));
         quotes.add(new QuoteEntity("Quote6", LocalDate.now(), 1));
         quotes.add(new QuoteEntity("Quote7", LocalDate.now(), 1));
-    }
-
-    List<QuoteEntity> getQuotes() {
-        return this.quotes;
     }
 }

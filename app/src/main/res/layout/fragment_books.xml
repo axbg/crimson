@@ -42,7 +42,7 @@
         android:layout_marginBottom="10dp"
         android:clickable="true"
         android:src="@android:drawable/ic_menu_add"
-        app:backgroundTint="#8728CC"
+        app:backgroundTint="@color/primaryPurple"
         app:layout_constraintBottom_toBottomOf="@id/books_grid_view"
         app:layout_constraintEnd_toEndOf="parent" />
 
