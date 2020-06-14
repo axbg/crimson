@@ -1,6 +1,7 @@
 package com.axbg.crimson.ui.books;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.axbg.crimson.R;
 import com.axbg.crimson.db.entity.BookEntity;
+import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -20,6 +22,7 @@ public class BooksFragment extends androidx.fragment.app.Fragment {
     private List<BookEntity> books;
     private BooksAdapter booksAdapter;
     private BooksViewModel booksViewModel;
+    private ShimmerRecyclerView shimmerLayout;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         booksViewModel = new ViewModelProvider(this).get(BooksViewModel.class);
@@ -33,7 +36,16 @@ public class BooksFragment extends androidx.fragment.app.Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         bindAddBookButton();
-        bindGridView();
+        bindShimmer();
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                shimmerLayout.hideShimmerAdapter();
+                bindGridView(books);
+            }
+        }, 2000);
     }
 
     private void bindAddBookButton() {
@@ -46,9 +58,14 @@ public class BooksFragment extends androidx.fragment.app.Fragment {
         });
     }
 
-    private void bindGridView() {
+    private void bindGridView(List<BookEntity> books) {
         booksAdapter = new BooksAdapter(books, R.layout.adapter_books, requireContext());
         GridView booksGridView = requireView().findViewById(R.id.books_grid_view);
         booksGridView.setAdapter(booksAdapter);
+    }
+
+    private void bindShimmer() {
+        shimmerLayout = requireView().findViewById(R.id.fragment_books_shimmer);
+        shimmerLayout.showShimmerAdapter();
     }
 }

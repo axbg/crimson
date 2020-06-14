@@ -8,7 +8,7 @@
     android:padding="8dp">
 
     <ImageView
-        android:id="@+id/bookList_image"
+        android:id="@+id/bookList_image_shimmer"
         android:layout_width="82dp"
         android:layout_height="123dp"
         android:layout_marginStart="16dp"
@@ -19,13 +19,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/bookList_book"
+        android:id="@+id/bookList_book_shimmer"
         android:layout_width="82dp"
-        android:layout_height="42dp"
+        android:layout_height="21dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="26dp"
+        android:background="@color/shimmerGray"
         android:gravity="center"
-        android:text="@string/TITLE_PLACEHOLDER"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bookList_image" />
+        app:layout_constraintTop_toBottomOf="@+id/bookList_image_shimmer" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,17 +18,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/quotes_add_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="10dp"
-        android:clickable="true"
-        android:src="@android:drawable/ic_menu_add"
-        app:backgroundTint="@color/primaryPurple"
-        app:layout_constraintBottom_toBottomOf="@+id/quotes_listview"
-        app:layout_constraintEnd_toEndOf="parent" />
+    <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+        android:id="@+id/fragment_quotes_shimmer"
+        android:layout_width="385dp"
+        android:layout_height="659dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/quotes_title"
+        app:layout_constraintVertical_bias="0.054"
+        app:shimmer_demo_angle="20"
+        app:shimmer_demo_child_count="6"
+        app:shimmer_demo_layout="@layout/shimmer_adapter_quotes"
+        app:shimmer_demo_layout_manager_type="linear_vertical" />
 
     <ListView
         android:id="@+id/quotes_listview"
@@ -41,8 +45,18 @@
         app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/quotes_title"
-        app:layout_constraintVertical_bias="0.054">
+        app:layout_constraintVertical_bias="0.054" />
 
-    </ListView>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/quotes_add_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
+        android:clickable="true"
+        android:src="@android:drawable/ic_menu_add"
+        app:backgroundTint="@color/primaryPurple"
+        app:layout_constraintBottom_toBottomOf="@+id/quotes_listview"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

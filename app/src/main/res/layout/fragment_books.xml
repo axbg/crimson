@@ -7,7 +7,7 @@
     tools:context=".ui.books.BooksFragment">
 
     <TextView
-        android:id="@+id/quotes_title"
+        android:id="@+id/books_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
@@ -18,20 +18,37 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+        android:id="@+id/fragment_books_shimmer"
+        android:layout_width="385dp"
+        android:layout_height="659dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/books_title"
+        app:layout_constraintVertical_bias="0.054"
+        app:shimmer_demo_angle="20"
+        app:shimmer_demo_child_count="12"
+        app:shimmer_demo_grid_child_count="3"
+        app:shimmer_demo_layout="@layout/shimmer_adapter_books"
+        app:shimmer_demo_layout_manager_type="grid" />
+
     <GridView
         android:id="@+id/books_grid_view"
         android:layout_width="385dp"
         android:layout_height="659dp"
         android:layout_marginTop="20dp"
         android:columnWidth="100dp"
+        android:drawSelectorOnTop="true"
         android:gravity="center"
         android:numColumns="auto_fit"
-        android:drawSelectorOnTop="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/quotes_title"
+        app:layout_constraintTop_toBottomOf="@+id/books_title"
         app:layout_constraintVertical_bias="0.054" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

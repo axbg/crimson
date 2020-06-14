@@ -50,6 +50,9 @@ dependencies {
     // circular image
     implementation 'com.mikhaellopez:circularimageview:4.2.0'
 
+    // grid-view shimmer
+    implementation 'com.github.sharish:ShimmerRecyclerView:v1.3'
+
     // Test helpers
     testImplementation "androidx.room:room-testing:$room_version"
 }

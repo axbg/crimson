@@ -1,6 +1,7 @@
 package com.axbg.crimson.ui.quotes;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.axbg.crimson.R;
 import com.axbg.crimson.db.entity.QuoteEntity;
+import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -22,6 +24,7 @@ public class QuotesFragment extends Fragment {
     private List<QuoteEntity> quotes;
     private QuotesAdapter quotesAdapter;
     private QuotesViewModel quotesViewModel;
+    private ShimmerRecyclerView shimmerLayout;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,7 +39,16 @@ public class QuotesFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         bindAddQuoteFab();
-        bindListView();
+        bindShimmer();
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                shimmerLayout.hideShimmerAdapter();
+                bindListView(quotes);
+            }
+        }, 2000);
     }
 
     private void bindAddQuoteFab() {
@@ -49,9 +61,14 @@ public class QuotesFragment extends Fragment {
         });
     }
 
-    private void bindListView() {
+    private void bindListView(List<QuoteEntity> quotes) {
         quotesAdapter = new QuotesAdapter(quotes, R.layout.adapter_quotes, requireContext());
         ListView quotesListView = requireView().findViewById(R.id.quotes_listview);
         quotesListView.setAdapter(quotesAdapter);
+    }
+
+    private void bindShimmer() {
+        shimmerLayout = requireView().findViewById(R.id.fragment_quotes_shimmer);
+        shimmerLayout.showShimmerAdapter();
     }
 }

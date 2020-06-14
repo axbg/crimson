@@ -15,4 +15,5 @@
     <string name="QUOTES_RATE_NO">Quotes/Book</string>
     <string name="STATISTICS_QUOTES_RATE_NO">Quotes / Book</string>
     <string name="NUMBER_PLACEHOLDER">0</string>
+    <string name="TITLE_PLACEHOLDER">Title</string>
 </resources>
