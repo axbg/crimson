@@ -16,16 +16,18 @@ import com.axbg.crimson.db.entity.BookEntity;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class BooksFragment extends androidx.fragment.app.Fragment {
-    private List<BookEntity> books;
+    private Map<Long, BookEntity> books;
     private BooksAdapter booksAdapter;
     private BooksViewModel booksViewModel;
     private ShimmerRecyclerView shimmerLayout;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        booksViewModel = new ViewModelProvider(this).get(BooksViewModel.class);
+        booksViewModel = new ViewModelProvider(requireActivity()).get(BooksViewModel.class);
         View root = inflater.inflate(R.layout.fragment_books, container, false);
 
         this.books = booksViewModel.getBooks();
@@ -43,9 +45,9 @@ public class BooksFragment extends androidx.fragment.app.Fragment {
             @Override
             public void run() {
                 shimmerLayout.hideShimmerAdapter();
-                bindGridView(books);
+                bindGridView(new ArrayList<>(books.values()));
             }
-        }, 2000);
+        }, 1000);
     }
 
     private void bindAddBookButton() {

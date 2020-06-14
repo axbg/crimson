@@ -3,6 +3,7 @@ package com.axbg.crimson.db.entity;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
@@ -42,6 +43,9 @@ public class QuoteEntity {
     @NonNull
     @ColumnInfo(name = "book_id")
     private long bookId;
+
+    @Ignore
+    private BookEntity bookEntity;
 
     public String getShortText() {
         return this.text.length() > 300 ? this.text.substring(0, 300) + "..." : this.text;

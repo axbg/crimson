@@ -12,9 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.axbg.crimson.R;
+import com.axbg.crimson.db.entity.BookEntity;
 import com.axbg.crimson.db.entity.QuoteEntity;
 
 import java.util.List;
+import java.util.Objects;
 
 public class QuotesAdapter extends ArrayAdapter<QuoteEntity> {
     private Context context;
@@ -35,7 +37,7 @@ public class QuotesAdapter extends ArrayAdapter<QuoteEntity> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        QuoteEntity quote = getItem(position);
+        final QuoteEntity quote = getItem(position);
         ViewHolder viewHolder;
 
         if (convertView == null) {
@@ -53,17 +55,22 @@ public class QuotesAdapter extends ArrayAdapter<QuoteEntity> {
 
         if (quote != null) {
             viewHolder.quote.setText(quote.getShortText());
-            viewHolder.book.setText("");
+            viewHolder.book.setText(getBookTitle(quote.getBookEntity()));
             viewHolder.date.setText(quote.getAddedAt().toString());
         }
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "element1", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), String.valueOf(Objects.requireNonNull(quote).getId()), Toast.LENGTH_SHORT).show();
             }
         });
 
         return convertView;
+    }
+
+    private String getBookTitle(BookEntity bookEntity) {
+        String title = bookEntity.getTitle();
+        return title != null ? title : "";
     }
 }

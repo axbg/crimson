@@ -20,35 +20,37 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
+import lombok.SneakyThrows;
+
 public class QuotesFragment extends Fragment {
-    private List<QuoteEntity> quotes;
     private QuotesAdapter quotesAdapter;
     private QuotesViewModel quotesViewModel;
     private ShimmerRecyclerView shimmerLayout;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        quotesViewModel = new ViewModelProvider(this).get(QuotesViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_quotes, container, false);
-
-        quotes = quotesViewModel.getQuotes();
-        return root;
+        quotesViewModel = new ViewModelProvider(requireActivity()).get(QuotesViewModel.class);
+        return inflater.inflate(R.layout.fragment_quotes, container, false);
     }
 
+    @SneakyThrows
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         bindAddQuoteFab();
         bindShimmer();
 
+        // load it async
+        quotesViewModel.loadBooks();
+
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 shimmerLayout.hideShimmerAdapter();
-                bindListView(quotes);
+                bindListView(quotesViewModel.getQuotes());
             }
-        }, 2000);
+        }, 1000);
     }
 
     private void bindAddQuoteFab() {
