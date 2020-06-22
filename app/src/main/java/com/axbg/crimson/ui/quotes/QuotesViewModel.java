@@ -1,43 +1,38 @@
 package com.axbg.crimson.ui.quotes;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.axbg.crimson.dao.QuoteDao;
+import com.axbg.crimson.db.DatabaseManager;
 import com.axbg.crimson.db.entity.BookEntity;
 import com.axbg.crimson.db.entity.QuoteEntity;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
+import java.util.Map;
 
+import io.reactivex.functions.Function;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-@NoArgsConstructor
 public class QuotesViewModel extends ViewModel {
-    private List<QuoteEntity> quotes;
-
     @Setter
-    private Function<Long, BookEntity> bookByIdLambda;
+    private Function<Void, LiveData<Map<Long, BookEntity>>> getBookByIdLambda;
+    private LiveData<List<QuoteEntity>> liveDataQuotes;
+    private QuoteDao quoteDao;
 
-    void loadBooks() throws InstantiationException {
-        if (bookByIdLambda == null) {
-            throw new InstantiationException("The booksByIdLambda was not populated");
-        }
+    public QuotesViewModel() {
+        quoteDao = DatabaseManager.getInstance(null).quoteDao();
+    }
 
-        quotes = new ArrayList<>();
-        quotes.add(new QuoteEntity("Quote1", LocalDate.now(), 1));
-        quotes.add(new QuoteEntity("Quote2", LocalDate.now(), 2));
-        quotes.add(new QuoteEntity("Quote3", LocalDate.now(), 3));
-        quotes.add(new QuoteEntity("Quote4", LocalDate.now(), 4));
-        quotes.add(new QuoteEntity("Quote5", LocalDate.now(), 5));
-        quotes.add(new QuoteEntity("Quote6", LocalDate.now(), 6));
-        quotes.add(new QuoteEntity("Quote7", LocalDate.now(), 7));
-
-        for (QuoteEntity quote : quotes) {
-            quote.setBookEntity(bookByIdLambda.apply(quote.getBookId()));
-        }
+    public void loadQuotes() throws Exception {
+        liveDataQuotes = quoteDao.getAll();
+        getBookByIdLambda.apply(null).observeForever(books -> {
+            if (liveDataQuotes.getValue() != null) {
+                liveDataQuotes.getValue()
+                        .forEach(quote -> quote.setBook(books.get(quote.getBookId())));
+            }
+        });
     }
 }

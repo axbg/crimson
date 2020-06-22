@@ -13,16 +13,16 @@
         android:gravity="center"
         android:text="@string/TEXT_PLACEHOLDER"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.523"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/quoteList_date"
-        android:layout_width="132dp"
+        android:layout_width="130dp"
         android:layout_height="25dp"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="22dp"
         android:layout_marginTop="8dp"
         android:focusable="false"
         android:text="@string/DATE_PLACEHOLDER"

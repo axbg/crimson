@@ -1,7 +1,6 @@
 package com.axbg.crimson.ui.quotes;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,33 +39,24 @@ public class QuotesFragment extends Fragment {
         bindAddQuoteFab();
         bindShimmer();
 
-        // load it async
-        quotesViewModel.loadBooks();
-
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                shimmerLayout.hideShimmerAdapter();
-                bindListView(quotesViewModel.getQuotes());
-            }
-        }, 1000);
+        quotesViewModel.getLiveDataQuotes().observe(getViewLifecycleOwner(), (quoteEntities -> {
+            shimmerLayout.hideShimmerAdapter();
+            bindListView(quoteEntities);
+        }));
     }
 
     private void bindAddQuoteFab() {
         FloatingActionButton addQuoteFab = requireView().findViewById(R.id.quotes_add_fab);
-        addQuoteFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "element", Toast.LENGTH_SHORT).show();
-            }
-        });
+        addQuoteFab.setOnClickListener(v -> Toast.makeText(getContext(), "Add quote", Toast.LENGTH_SHORT).show());
     }
 
     private void bindListView(List<QuoteEntity> quotes) {
-        quotesAdapter = new QuotesAdapter(quotes, R.layout.adapter_quotes, requireContext());
-        ListView quotesListView = requireView().findViewById(R.id.quotes_listview);
-        quotesListView.setAdapter(quotesAdapter);
+        try {
+            quotesAdapter = new QuotesAdapter(quotes, R.layout.adapter_quotes, requireContext());
+            ListView quotesListView = requireView().findViewById(R.id.quotes_listview);
+            quotesListView.setAdapter(quotesAdapter);
+        } catch (Exception ignored) {
+        }
     }
 
     private void bindShimmer() {

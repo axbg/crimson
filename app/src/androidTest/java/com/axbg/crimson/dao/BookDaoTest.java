@@ -2,6 +2,8 @@ package com.axbg.crimson.dao;
 
 import android.content.Context;
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.lifecycle.LiveData;
 import androidx.room.Room;
 import androidx.test.platform.app.InstrumentationRegistry;
 
@@ -11,7 +13,9 @@ import com.axbg.crimson.db.entity.BookEntity;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -20,11 +24,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 public class BookDaoTest {
-    private static final int NO_OF_QUOTES = 12;
-    private static final int PAGE_SIZE = 10;
+    private static final int NO_OF_BOOKS = 12;
 
     private static DatabaseManager db;
     private static Context mockContext;
+
+    @Rule
+    public TestRule rule = new InstantTaskExecutorRule();
 
     @BeforeClass
     public static void setUpClass() {
@@ -36,7 +42,7 @@ public class BookDaoTest {
         db = Room.inMemoryDatabaseBuilder(mockContext, DatabaseManager.class).build();
 
         BookEntity book;
-        for (int i = 0; i < NO_OF_QUOTES; i++) {
+        for (int i = 0; i < NO_OF_BOOKS; i++) {
             book = new BookEntity("title_" + i, "author_" + i, LocalDate.now(), "cover_" + i);
             book.setFinished(i % 2 == 0);
             db.bookDao().create(book);
@@ -57,28 +63,25 @@ public class BookDaoTest {
     @Test
     public void getByTitle() {
         List<BookEntity> result = db.bookDao().getByTitle("title");
-        assertEquals(NO_OF_QUOTES, result.size());
+        assertEquals(NO_OF_BOOKS, result.size());
     }
 
     @Test
-    public void getPage() {
-        List<BookEntity> firstPage = db.bookDao().getPage(1, PAGE_SIZE);
-        List<BookEntity> secondPage = db.bookDao().getPage(2, PAGE_SIZE);
-
-        assertEquals(PAGE_SIZE, firstPage.size());
-        assertEquals(NO_OF_QUOTES - PAGE_SIZE, secondPage.size());
+    public void getAll() {
+        LiveData<List<BookEntity>> liveDataBooks = db.bookDao().getAll();
+        liveDataBooks.observeForever(bookEntities -> assertEquals(NO_OF_BOOKS, bookEntities.size()));
     }
 
     @Test
     public void countByFinishedStatusTrue() {
         int result = db.bookDao().countByFinishedStatus(true);
-        assertEquals(NO_OF_QUOTES / 2, result);
+        assertEquals(NO_OF_BOOKS / 2, result);
     }
 
     @Test
     public void countByFinishedStatusFalse() {
         int result = db.bookDao().countByFinishedStatus(false);
-        assertEquals(NO_OF_QUOTES / 2, result);
+        assertEquals(NO_OF_BOOKS / 2, result);
     }
 
     @Test
@@ -86,7 +89,7 @@ public class BookDaoTest {
         BookEntity book = new BookEntity("new", "new_author", LocalDate.now(), "new_cover");
         long id = db.bookDao().create(book);
 
-        assertEquals(NO_OF_QUOTES + 1, id);
+        assertEquals(NO_OF_BOOKS + 1, id);
     }
 
     @Test

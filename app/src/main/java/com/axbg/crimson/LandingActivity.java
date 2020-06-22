@@ -8,22 +8,27 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import com.axbg.crimson.db.DatabaseManager;
 import com.axbg.crimson.db.entity.BookEntity;
+import com.axbg.crimson.db.entity.QuoteEntity;
 import com.axbg.crimson.ui.books.BooksViewModel;
 import com.axbg.crimson.ui.quotes.QuotesViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.function.Function;
+import java.time.LocalDate;
 
 public class LandingActivity extends AppCompatActivity {
-
-    private QuotesViewModel quotesViewModel;
     private BooksViewModel booksViewModel;
+    private DatabaseManager databaseManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
+
+        databaseManager = DatabaseManager.getInstance(getApplicationContext());
+
+        addDummyData();
         bindNavigation();
         bindViewModels();
     }
@@ -36,11 +41,27 @@ public class LandingActivity extends AppCompatActivity {
 
     private void bindViewModels() {
         booksViewModel = new ViewModelProvider(this).get(BooksViewModel.class);
-        quotesViewModel = new ViewModelProvider(this).get(QuotesViewModel.class);
-        quotesViewModel.setBookByIdLambda(new Function<Long, BookEntity>() {
-            @Override
-            public BookEntity apply(Long bookId) {
-                return booksViewModel.getBook(bookId);
+        QuotesViewModel quotesViewModel = new ViewModelProvider(this).get(QuotesViewModel.class);
+        quotesViewModel.setGetBookByIdLambda(aVoid -> booksViewModel.getBooksHashMap());
+        try {
+            quotesViewModel.loadQuotes();
+        } catch (Exception ignored) {
+        }
+    }
+
+    private void addDummyData() {
+        databaseManager.bookDao().getAll().observe(this, (books) -> {
+            if (books.size() == 0) {
+                new Thread() {
+                    @Override
+                    public void run() {
+                        for (int i = 0; i < 10; i++) {
+                            long bookId = databaseManager.bookDao().create(new BookEntity("Title" + i, "Author" + i,
+                                    LocalDate.now(), String.valueOf(R.drawable.cover_sample)));
+                            databaseManager.quoteDao().create(new QuoteEntity("Quote" + i, LocalDate.now(), bookId));
+                        }
+                    }
+                }.start();
             }
         });
     }

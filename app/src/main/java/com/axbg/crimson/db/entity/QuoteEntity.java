@@ -45,7 +45,7 @@ public class QuoteEntity {
     private long bookId;
 
     @Ignore
-    private BookEntity bookEntity;
+    private BookEntity book;
 
     public String getShortText() {
         return this.text.length() > 300 ? this.text.substring(0, 300) + "..." : this.text;

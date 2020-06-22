@@ -69,12 +69,7 @@ public class BooksAdapter extends BaseAdapter {
             viewHolder.title.setText(book.getTitle());
         }
 
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "element1", Toast.LENGTH_SHORT).show();
-            }
-        });
+        convertView.setOnClickListener(v -> Toast.makeText(context, "element1", Toast.LENGTH_SHORT).show());
 
         return convertView;
     }

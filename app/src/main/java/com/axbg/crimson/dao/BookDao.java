@@ -1,5 +1,6 @@
 package com.axbg.crimson.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -13,13 +14,13 @@ import java.util.List;
 @Dao
 public interface BookDao {
     @Query("SELECT * FROM books WHERE id = :id")
-    BookEntity getById(int id);
+    BookEntity getById(long id);
+
+    @Query("SELECT * FROM books")
+    LiveData<List<BookEntity>> getAll();
 
     @Query("SELECT * FROM books WHERE title LIKE '%' || :title || '%' ORDER BY id DESC")
     List<BookEntity> getByTitle(String title);
-
-    @Query("SELECT * FROM books ORDER BY id DESC LIMIT :pageSize OFFSET (:pageSize * (:page -1))")
-    List<BookEntity> getPage(int page, int pageSize);
 
     @Query("SELECT COUNT(id) FROM books WHERE finished = :status")
     int countByFinishedStatus(boolean status);

@@ -1,5 +1,6 @@
 package com.axbg.crimson.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -13,13 +14,13 @@ import java.util.List;
 @Dao
 public interface QuoteDao {
     @Query("SELECT * FROM quotes WHERE id = :id")
-    QuoteEntity getById(int id);
+    QuoteEntity getById(long id);
+
+    @Query("SELECT * FROM quotes")
+    LiveData<List<QuoteEntity>> getAll();
 
     @Query("SELECT * FROM quotes WHERE text LIKE '%' || :text || '%'")
     List<QuoteEntity> getByText(String text);
-
-    @Query("SELECT * FROM quotes ORDER BY id DESC LIMIT :pageSize OFFSET (:pageSize * (:page - 1))")
-    List<QuoteEntity> getPage(int page, int pageSize);
 
     @Query("SELECT * FROM quotes WHERE book_id = :id")
     List<QuoteEntity> getByBookId(long id);

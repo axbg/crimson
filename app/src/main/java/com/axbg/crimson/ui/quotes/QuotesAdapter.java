@@ -55,22 +55,17 @@ public class QuotesAdapter extends ArrayAdapter<QuoteEntity> {
 
         if (quote != null) {
             viewHolder.quote.setText(quote.getShortText());
-            viewHolder.book.setText(getBookTitle(quote.getBookEntity()));
+            viewHolder.book.setText(getBookTitle(quote.getBook()));
             viewHolder.date.setText(quote.getAddedAt().toString());
         }
 
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), String.valueOf(Objects.requireNonNull(quote).getId()), Toast.LENGTH_SHORT).show();
-            }
-        });
+        convertView.setOnClickListener(v -> Toast.makeText(getContext(),
+                String.valueOf(Objects.requireNonNull(quote).getId()), Toast.LENGTH_SHORT).show());
 
         return convertView;
     }
 
     private String getBookTitle(BookEntity bookEntity) {
-        String title = bookEntity.getTitle();
-        return title != null ? title : "";
+        return bookEntity != null ? bookEntity.getTitle() : "";
     }
 }

@@ -2,6 +2,8 @@ package com.axbg.crimson.dao;
 
 import android.content.Context;
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.lifecycle.LiveData;
 import androidx.room.Room;
 import androidx.room.Transaction;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -13,7 +15,9 @@ import com.axbg.crimson.db.entity.QuoteEntity;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,10 +27,12 @@ import static org.junit.Assert.assertNull;
 
 public class QuoteDaoTest {
     private static final int NO_OF_QUOTES = 11;
-    private static final int PAGE_SIZE = 10;
 
     private static DatabaseManager db;
     private static Context mockContext;
+
+    @Rule
+    public TestRule rule = new InstantTaskExecutorRule();
 
     @BeforeClass
     public static void setUpClass() {
@@ -63,12 +69,9 @@ public class QuoteDaoTest {
     }
 
     @Test
-    public void getPage() {
-        List<QuoteEntity> firstPage = db.quoteDao().getPage(1, PAGE_SIZE);
-        List<QuoteEntity> secondPage = db.quoteDao().getPage(2, PAGE_SIZE);
-
-        assertEquals(PAGE_SIZE, firstPage.size());
-        assertEquals(NO_OF_QUOTES - PAGE_SIZE, secondPage.size());
+    public void getAll() {
+        LiveData<List<QuoteEntity>> liveDataQuotes = db.quoteDao().getAll();
+        liveDataQuotes.observeForever(quotes -> assertEquals(NO_OF_QUOTES, quotes.size()));
     }
 
     @Test
