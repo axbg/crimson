@@ -22,9 +22,6 @@ public interface QuoteDao {
     @Query("SELECT * FROM quotes WHERE text LIKE '%' || :text || '%'")
     List<QuoteEntity> getByText(String text);
 
-    @Query("SELECT * FROM quotes WHERE book_id = :id")
-    List<QuoteEntity> getByBookId(long id);
-
     @Query("SELECT COUNT(id) FROM quotes")
     int count();
 

@@ -2,12 +2,12 @@ package com.axbg.crimson.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
 import com.axbg.crimson.db.entity.BookEntity;
+import com.axbg.crimson.db.entity.QuoteEntity;
 
 import java.util.List;
 
@@ -22,6 +22,9 @@ public interface BookDao {
     @Query("SELECT * FROM books WHERE title LIKE '%' || :title || '%' ORDER BY id DESC")
     List<BookEntity> getByTitle(String title);
 
+    @Query("SELECT * FROM quotes WHERE book_id = :id")
+    LiveData<List<QuoteEntity>> getQuotesByBookId(long id);
+
     @Query("SELECT COUNT(id) FROM books WHERE finished = :status")
     int countByFinishedStatus(boolean status);
 
@@ -31,6 +34,6 @@ public interface BookDao {
     @Update
     int update(BookEntity bookEntity);
 
-    @Delete
-    int delete(BookEntity bookEntity);
+    @Query("DELETE FROM quotes WHERE id = :id")
+    int delete(long id);
 }

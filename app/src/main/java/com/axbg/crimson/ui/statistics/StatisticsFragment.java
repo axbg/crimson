@@ -25,20 +25,16 @@ public class StatisticsFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         bindProfilePictureClick();
         bindStatistics();
     }
 
     private void bindProfilePictureClick() {
         ImageView profilePicture = requireView().findViewById(R.id.statistics_profile_picture);
-        profilePicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(requireContext(), "You're awesome!", Toast.LENGTH_SHORT).show();
-            }
-        });
+        profilePicture.setOnClickListener(v -> Toast.makeText(requireContext(),
+                "You're awesome!", Toast.LENGTH_SHORT).show());
     }
 
     private void bindStatistics() {

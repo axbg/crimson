@@ -9,6 +9,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.axbg.crimson.db.DatabaseManager;
 import com.axbg.crimson.db.entity.BookEntity;
+import com.axbg.crimson.db.entity.QuoteEntity;
 
 import org.junit.After;
 import org.junit.Before;
@@ -25,6 +26,7 @@ import static org.junit.Assert.assertNull;
 
 public class BookDaoTest {
     private static final int NO_OF_BOOKS = 12;
+    private static final int NO_OF_QUOTES = 1;
 
     private static DatabaseManager db;
     private static Context mockContext;
@@ -42,10 +44,14 @@ public class BookDaoTest {
         db = Room.inMemoryDatabaseBuilder(mockContext, DatabaseManager.class).build();
 
         BookEntity book;
+        QuoteEntity quote;
         for (int i = 0; i < NO_OF_BOOKS; i++) {
             book = new BookEntity("title_" + i, "author_" + i, LocalDate.now(), "cover_" + i);
             book.setFinished(i % 2 == 0);
-            db.bookDao().create(book);
+            long bookId = db.bookDao().create(book);
+
+            quote = new QuoteEntity("quote_" + i, LocalDate.now(), bookId);
+            db.quoteDao().create(quote);
         }
     }
 
@@ -79,6 +85,12 @@ public class BookDaoTest {
     }
 
     @Test
+    public void getByBookId() {
+        LiveData<List<QuoteEntity>> liveDataQuotes = db.bookDao().getQuotesByBookId(1);
+        liveDataQuotes.observeForever(quoteEntities -> assertEquals(NO_OF_QUOTES, quoteEntities.size()));
+    }
+
+    @Test
     public void countByFinishedStatusFalse() {
         int result = db.bookDao().countByFinishedStatus(false);
         assertEquals(NO_OF_BOOKS / 2, result);
@@ -109,7 +121,7 @@ public class BookDaoTest {
     @Test
     public void delete() {
         BookEntity bookEntity = db.bookDao().getById(1);
-        long result = db.bookDao().delete(bookEntity);
+        long result = db.bookDao().delete(bookEntity.getId());
 
         BookEntity updatedBookEntity = db.bookDao().getById(1);
 

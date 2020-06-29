@@ -57,7 +57,7 @@ public class LandingActivity extends AppCompatActivity {
                     public void run() {
                         for (int i = 0; i < 10; i++) {
                             long bookId = databaseManager.bookDao().create(new BookEntity("Title" + i, "Author" + i,
-                                    LocalDate.now(), String.valueOf(R.drawable.cover_sample)));
+                                    LocalDate.now(), String.valueOf(R.drawable.sample)));
                             databaseManager.quoteDao().create(new QuoteEntity("Quote" + i, LocalDate.now(), bookId));
                         }
                     }

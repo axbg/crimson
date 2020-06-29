@@ -16,7 +16,6 @@ import lombok.Getter;
 
 @Getter
 public class BooksViewModel extends ViewModel {
-
     private BookDao bookDao;
     private LiveData<List<BookEntity>> liveDataBooks;
     private LiveData<Map<Long, BookEntity>> booksHashMap;

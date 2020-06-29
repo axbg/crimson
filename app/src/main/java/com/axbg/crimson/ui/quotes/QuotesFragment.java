@@ -19,8 +19,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
-import lombok.SneakyThrows;
-
 public class QuotesFragment extends Fragment {
     private QuotesAdapter quotesAdapter;
     private QuotesViewModel quotesViewModel;
@@ -32,10 +30,9 @@ public class QuotesFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_quotes, container, false);
     }
 
-    @SneakyThrows
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         bindAddQuoteFab();
         bindShimmer();
 

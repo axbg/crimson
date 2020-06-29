@@ -75,12 +75,6 @@ public class QuoteDaoTest {
     }
 
     @Test
-    public void getByBookId() {
-        List<QuoteEntity> quotes = db.quoteDao().getByBookId(1);
-        assertEquals(NO_OF_QUOTES, quotes.size());
-    }
-
-    @Test
     public void count() {
         int result = db.quoteDao().count();
         assertEquals(NO_OF_QUOTES, result);
