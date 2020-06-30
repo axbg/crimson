@@ -1,33 +1,26 @@
 package com.axbg.crimson.ui.books;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.axbg.crimson.R;
-import com.axbg.crimson.db.entity.BookEntity;
+import com.axbg.crimson.network.NetworkUtil;
+import com.axbg.crimson.network.object.OpenLibraryBook;
+import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.util.List;
 
-public class BooksAdapter extends BaseAdapter {
+public class OpenLibraryBooksAdapter extends BaseAdapter {
     private Context context;
-    private List<BookEntity> books;
+    private List<OpenLibraryBook> books;
     private int resource;
 
-    private static class ViewHolder {
-        ImageView cover;
-        TextView title;
-    }
-
-    BooksAdapter(List<BookEntity> books, int resource, Context context) {
+    OpenLibraryBooksAdapter(List<OpenLibraryBook> books, int resource, Context context) {
         this.context = context;
         this.resource = resource;
         this.books = books;
@@ -45,40 +38,37 @@ public class BooksAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return this.books.get(position).getId();
+        return position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        BookEntity book = this.books.get(position);
-        ViewHolder viewHolder;
+        OpenLibraryBook book = this.books.get(position);
+        OpenLibraryBooksAdapter.ViewHolder viewHolder;
 
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(resource, parent, false);
-            viewHolder = new ViewHolder();
 
+            viewHolder = new OpenLibraryBooksAdapter.ViewHolder();
             viewHolder.cover = convertView.findViewById(R.id.bookList_image);
             viewHolder.title = convertView.findViewById(R.id.bookList_book);
 
             convertView.setTag(viewHolder);
         } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+            viewHolder = (OpenLibraryBooksAdapter.ViewHolder) convertView.getTag();
         }
 
         if (book != null) {
-            Bitmap image = getImage(book.getCoverPath());
-            viewHolder.cover.setImageBitmap(image);
+            Picasso.get().load(NetworkUtil.buildCoverUrl(book.getEditionKey())).into(viewHolder.cover);
             viewHolder.cover.setAdjustViewBounds(true);
             viewHolder.title.setText(book.getTitle());
         }
 
-        convertView.setOnClickListener(v -> Toast.makeText(context, "element1", Toast.LENGTH_SHORT).show());
-
         return convertView;
     }
 
-    private Bitmap getImage(String coverPath) {
-        File coverFile = new File(coverPath);
-        return BitmapFactory.decodeFile(coverFile.getAbsolutePath());
+    private static class ViewHolder {
+        ImageView cover;
+        TextView title;
     }
 }

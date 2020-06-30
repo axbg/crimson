@@ -28,7 +28,7 @@ public class LandingActivity extends AppCompatActivity {
 
         databaseManager = DatabaseManager.getInstance(getApplicationContext());
 
-        addDummyData();
+//        addDummyData();
         bindNavigation();
         bindViewModels();
     }

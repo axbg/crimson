@@ -21,4 +21,6 @@
     <string name="DETAIL_BOOK_FINISHED">Finished?</string>
     <string name="DETAIL_BOOK_SAVE">Save</string>
     <string name="DETAIL_BOOK_REMOVE">Remove</string>
+    <string name="COVER_SEARCH">Search for a cover</string>
+    <string name="SEARCH">Search</string>
 </resources>

@@ -17,11 +17,15 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.axbg.crimson.R;
 import com.axbg.crimson.databinding.FragmentBookDetailBinding;
 import com.axbg.crimson.db.entity.BookEntity;
 import com.axbg.crimson.db.entity.QuoteEntity;
+import com.axbg.crimson.network.NetworkUtil;
+import com.axbg.crimson.network.object.OpenLibraryBook;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
@@ -117,18 +121,23 @@ public class BookDetailFragment extends Fragment {
 
         bindCoverFragmentUrlListener();
         binding.bookDetailCover.setOnClickListener(v -> {
-            // open CoverFragment
+            NavController nav = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+            nav.navigate(R.id.cover);
         });
     }
 
     private void bindCoverFragmentUrlListener() {
         NavController navController = NavHostFragment.findNavController(this);
-        MutableLiveData<String> coverUrl = Objects.requireNonNull(navController.getCurrentBackStackEntry())
+        MutableLiveData<OpenLibraryBook> coverUrl = Objects.requireNonNull(navController.getCurrentBackStackEntry())
                 .getSavedStateHandle()
-                .getLiveData("COVER_URL");
-        coverUrl.observe(getViewLifecycleOwner(), (url) -> {
-            imageUrl = url;
-            Picasso.get().load(url).into(binding.bookDetailCover);
+                .getLiveData("OPEN_BOOK");
+
+        coverUrl.observe(getViewLifecycleOwner(), (book) -> {
+            imageUrl = book.getEditionKey();
+
+            binding.bookDetailTitleText.setText(book.getTitle());
+            binding.bookDetailAuthorText.setText(book.getAuthor());
+            Picasso.get().load(NetworkUtil.buildCoverUrl(imageUrl)).into(binding.bookDetailCover);
         });
     }
 
@@ -155,11 +164,11 @@ public class BookDetailFragment extends Fragment {
 
         String author = Objects.requireNonNull(binding.bookDetailAuthorText.getText()).toString();
         if (author.isEmpty()) {
-            binding.bookDetailTitleText.setError("Author cannot be empty");
+            binding.bookDetailAuthorText.setError("Author cannot be empty");
             return null;
         }
 
-        BookEntity bookEntity = new BookEntity(title, author, LocalDate.now(), null);
+        BookEntity bookEntity = new BookEntity(title, author, LocalDate.now(), "");
         bookEntity.setFinished(binding.bookDetailFinished.isChecked());
         return bookEntity;
     }
@@ -170,7 +179,7 @@ public class BookDetailFragment extends Fragment {
         boolean result = coverFile.createNewFile();
 
         if (result) {
-            try (OutputStream outputStream = new FileOutputStream(path)) {
+            try (OutputStream outputStream = new FileOutputStream(coverFile)) {
                 cover.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
                 outputStream.flush();
             }

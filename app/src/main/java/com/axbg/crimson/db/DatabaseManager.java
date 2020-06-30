@@ -21,7 +21,7 @@ public abstract class DatabaseManager extends RoomDatabase {
         if (instance == null) {
             synchronized (DatabaseManager.class) {
                 if (instance == null && context != null) {
-                    instance = Room.databaseBuilder(context, DatabaseManager.class, "crimson1-db")
+                    instance = Room.databaseBuilder(context, DatabaseManager.class, "crimsonn-db")
                             .allowMainThreadQueries()
                             .build();
                 }

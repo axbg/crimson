@@ -43,5 +43,13 @@
         <argument
             android:name="bookId"
             android:defaultValue="0" />
+        <action
+            android:id="@+id/action_books_detail_to_coverFragment"
+            app:destination="@id/cover" />
     </fragment>
+    <fragment
+        android:id="@+id/cover"
+        android:name="com.axbg.crimson.ui.books.CoverFragment"
+        android:label="fragment_cover"
+        tools:layout="@layout/fragment_cover" />
 </navigation>
