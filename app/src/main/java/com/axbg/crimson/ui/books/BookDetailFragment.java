@@ -43,7 +43,9 @@ import java.util.stream.Collectors;
 public class BookDetailFragment extends Fragment {
     private FragmentBookDetailBinding binding;
     private BooksViewModel booksViewModel;
+    private BookEntity existingBook;
     private String imageUrl;
+    private boolean createdCustomCover;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,26 +81,30 @@ public class BookDetailFragment extends Fragment {
         binding.bookDetailRemove.setVisibility(View.VISIBLE);
         binding.bookDetailRemove.setOnClickListener(v -> AsyncTask.execute(() -> {
             booksViewModel.getBookDao().delete(bookId);
-            getParentFragmentManager().popBackStack();
+            NavController nav = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+            nav.navigate(R.id.navigation_books);
         }));
 
         BookEntity bookEntity = Objects.requireNonNull(booksViewModel.getBooksHashMap().getValue()).get(bookId);
+        existingBook = bookEntity;
 
-        assert bookEntity != null;
-        binding.bookDetailCover.setImageBitmap(loadCover(bookEntity.getCoverPath()));
-        binding.bookDetailTitleText.setText(bookEntity.getTitle());
-        binding.bookDetailAuthorText.setText(bookEntity.getAuthor());
-        binding.bookDetailFinished.setChecked(bookEntity.isFinished());
-        booksViewModel.getBookDao().getQuotesByBookId(bookId).observe(getViewLifecycleOwner(), quoteEntities -> {
-            List<String> actualQuotes = quoteEntities.stream()
-                    .map(QuoteEntity::getShortText)
-                    .collect(Collectors.toList());
+        if (bookEntity != null) {
+            binding.bookDetailCover.setImageBitmap(loadCover(bookEntity.getCoverPath()));
+            binding.bookDetailTitleText.setText(bookEntity.getTitle());
+            binding.bookDetailAuthorText.setText(bookEntity.getAuthor());
+            binding.bookDetailFinished.setChecked(bookEntity.isFinished());
 
-            ArrayAdapter<String> quotesAdapter = new ArrayAdapter<>(requireContext(),
-                    android.R.layout.simple_list_item_1, actualQuotes);
+            booksViewModel.getBookDao().getQuotesByBookId(bookId).observe(getViewLifecycleOwner(), quoteEntities -> {
+                List<String> actualQuotes = quoteEntities.stream()
+                        .map(QuoteEntity::getShortText)
+                        .collect(Collectors.toList());
 
-            binding.bookDetailQuotes.setAdapter(quotesAdapter);
-        });
+                ArrayAdapter<String> quotesAdapter = new ArrayAdapter<>(requireContext(),
+                        android.R.layout.simple_list_item_1, actualQuotes);
+
+                binding.bookDetailQuotes.setAdapter(quotesAdapter);
+            });
+        }
     }
 
     private void bindLayout() {
@@ -108,13 +114,20 @@ public class BookDetailFragment extends Fragment {
                 AsyncTask.execute(() -> {
                     try {
                         BitmapDrawable coverBitmap = (BitmapDrawable) binding.bookDetailCover.getDrawable();
-                        book.setCoverPath(downloadCover(coverBitmap.getBitmap()));
+                        downloadCover(book, coverBitmap.getBitmap());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
 
-                    booksViewModel.getBookDao().create(book);
-                    getParentFragmentManager().popBackStack();
+                    if (existingBook == null) {
+                        booksViewModel.getBookDao().create(book);
+                    } else {
+                        synchronizeBooks(existingBook, book);
+                        booksViewModel.getBookDao().update(existingBook);
+                    }
+
+                    NavController nav = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+                    nav.navigate(R.id.navigation_books);
                 });
             }
         });
@@ -128,30 +141,53 @@ public class BookDetailFragment extends Fragment {
 
     private void bindCoverFragmentUrlListener() {
         NavController navController = NavHostFragment.findNavController(this);
-        MutableLiveData<OpenLibraryBook> coverUrl = Objects.requireNonNull(navController.getCurrentBackStackEntry())
+        MutableLiveData<OpenLibraryBook> openBookData = Objects.requireNonNull(navController.getCurrentBackStackEntry())
                 .getSavedStateHandle()
                 .getLiveData("OPEN_BOOK");
-
-        coverUrl.observe(getViewLifecycleOwner(), (book) -> {
-            imageUrl = book.getEditionKey();
-
+        openBookData.observe(getViewLifecycleOwner(), (book) -> {
             binding.bookDetailTitleText.setText(book.getTitle());
             binding.bookDetailAuthorText.setText(book.getAuthor());
+            imageUrl = book.getEditionKey();
             Picasso.get().load(NetworkUtil.buildCoverUrl(imageUrl)).into(binding.bookDetailCover);
         });
+
+        MutableLiveData<String> customCover = Objects.requireNonNull(navController.getCurrentBackStackEntry())
+                .getSavedStateHandle()
+                .getLiveData("CUSTOM_COVER");
+        customCover.observe(getViewLifecycleOwner(), (coverPath) -> {
+            createdCustomCover = true;
+            binding.bookDetailCover.setImageBitmap(loadCover(coverPath));
+            removeFromCache(coverPath);
+        });
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    private void removeFromCache(String cacheLocation) {
+        File file = new File(cacheLocation);
+        if (file.exists()) {
+            file.delete();
+        }
     }
 
     private Bitmap loadCover(String location) {
         File file = new File(location);
-        return file.exists() ? BitmapFactory.decodeFile(file.getAbsolutePath())
-                : null;
+        Bitmap bitmap;
+
+        if (file.exists()) {
+            bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+            if (bitmap.getHeight() > 1 && bitmap.getWidth() > 1) {
+                return bitmap;
+            }
+        }
+
+        return BitmapFactory.decodeResource(requireContext().getResources(), R.drawable.cover_add_sample);
     }
 
     private BookEntity getInputValues() {
         binding.bookDetailTitleText.setError(null);
         binding.bookDetailAuthorText.setError(null);
 
-        if (imageUrl == null || imageUrl.isEmpty()) {
+        if (((imageUrl == null || imageUrl.isEmpty()) && existingBook == null) && !createdCustomCover) {
             Toast.makeText(requireContext(), "Cover image cannot be empty", Toast.LENGTH_SHORT).show();
             return null;
         }
@@ -173,18 +209,45 @@ public class BookDetailFragment extends Fragment {
         return bookEntity;
     }
 
-    private String downloadCover(Bitmap cover) throws IOException {
+    private void downloadCover(BookEntity book, Bitmap cover) throws IOException {
         String path = UUID.randomUUID().toString() + ".png";
+        Bitmap resizedBitmap = resizeBitmap(cover);
         File coverFile = new File(requireContext().getFilesDir(), path);
-        boolean result = coverFile.createNewFile();
 
-        if (result) {
-            try (OutputStream outputStream = new FileOutputStream(coverFile)) {
-                cover.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-                outputStream.flush();
+        if ((imageUrl != null || createdCustomCover) && resizedBitmap != null) {
+            if (coverFile.createNewFile()) {
+                try (OutputStream outputStream = new FileOutputStream(coverFile)) {
+                    resizedBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+                    outputStream.flush();
+                    book.setCoverPath(coverFile.getAbsolutePath());
+                }
             }
         }
+    }
 
-        return result ? coverFile.getAbsolutePath() : "";
+    private Bitmap resizeBitmap(Bitmap bitmap) {
+        if (bitmap != null) {
+            int ratio = 1;
+            int bitmapHeight = bitmap.getHeight();
+
+            while (bitmapHeight > 450) {
+                ratio++;
+                bitmapHeight = (bitmap.getHeight() / ratio);
+            }
+
+            return Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() / ratio, bitmapHeight, true);
+        }
+
+        return null;
+    }
+
+    private void synchronizeBooks(BookEntity existingBook, BookEntity newBook) {
+        existingBook.setTitle(newBook.getTitle());
+        existingBook.setAuthor(newBook.getAuthor());
+        existingBook.setFinished(newBook.isFinished());
+
+        if (!newBook.getCoverPath().isEmpty()) {
+            existingBook.setCoverPath(newBook.getCoverPath());
+        }
     }
 }

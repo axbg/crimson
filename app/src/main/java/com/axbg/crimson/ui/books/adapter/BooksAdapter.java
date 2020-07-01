@@ -1,4 +1,4 @@
-package com.axbg.crimson.ui.books;
+package com.axbg.crimson.ui.books.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.axbg.crimson.R;
 import com.axbg.crimson.db.entity.BookEntity;
@@ -27,7 +26,7 @@ public class BooksAdapter extends BaseAdapter {
         TextView title;
     }
 
-    BooksAdapter(List<BookEntity> books, int resource, Context context) {
+    public BooksAdapter(List<BookEntity> books, int resource, Context context) {
         this.context = context;
         this.resource = resource;
         this.books = books;
@@ -68,11 +67,8 @@ public class BooksAdapter extends BaseAdapter {
         if (book != null) {
             Bitmap image = getImage(book.getCoverPath());
             viewHolder.cover.setImageBitmap(image);
-            viewHolder.cover.setAdjustViewBounds(true);
             viewHolder.title.setText(book.getTitle());
         }
-
-        convertView.setOnClickListener(v -> Toast.makeText(context, "element1", Toast.LENGTH_SHORT).show());
 
         return convertView;
     }

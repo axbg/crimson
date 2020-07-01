@@ -1,4 +1,4 @@
-package com.axbg.crimson.ui.books;
+package com.axbg.crimson.ui.books.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -20,7 +20,7 @@ public class OpenLibraryBooksAdapter extends BaseAdapter {
     private List<OpenLibraryBook> books;
     private int resource;
 
-    OpenLibraryBooksAdapter(List<OpenLibraryBook> books, int resource, Context context) {
+    public OpenLibraryBooksAdapter(List<OpenLibraryBook> books, int resource, Context context) {
         this.context = context;
         this.resource = resource;
         this.books = books;
@@ -60,7 +60,6 @@ public class OpenLibraryBooksAdapter extends BaseAdapter {
 
         if (book != null) {
             Picasso.get().load(NetworkUtil.buildCoverUrl(book.getEditionKey())).into(viewHolder.cover);
-            viewHolder.cover.setAdjustViewBounds(true);
             viewHolder.title.setText(book.getTitle());
         }
 

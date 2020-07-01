@@ -14,14 +14,18 @@ import androidx.navigation.Navigation;
 
 import com.axbg.crimson.R;
 import com.axbg.crimson.db.entity.BookEntity;
+import com.axbg.crimson.ui.books.adapter.BooksAdapter;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BooksFragment extends androidx.fragment.app.Fragment {
     private BooksViewModel booksViewModel;
     private ShimmerRecyclerView shimmerLayout;
+    private BooksAdapter booksAdapter;
+    private List<BookEntity> books = new ArrayList<>();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,10 +38,11 @@ public class BooksFragment extends androidx.fragment.app.Fragment {
         super.onViewCreated(view, savedInstanceState);
         bindAddBookButton();
         bindShimmer();
+        bindGridView(books);
 
-        booksViewModel.getLiveDataBooks().observe(getViewLifecycleOwner(), books -> {
+        booksViewModel.getLiveDataBooks().observe(getViewLifecycleOwner(), liveBooks -> {
             shimmerLayout.hideShimmerAdapter();
-            bindGridView(books);
+            refreshBooksAdapter(liveBooks);
         });
     }
 
@@ -51,8 +56,18 @@ public class BooksFragment extends androidx.fragment.app.Fragment {
 
     private void bindGridView(List<BookEntity> books) {
         try {
-            BooksAdapter booksAdapter = new BooksAdapter(books, R.layout.adapter_books, requireContext());
+            booksAdapter = new BooksAdapter(books, R.layout.adapter_books, requireContext());
+
             GridView booksGridView = requireView().findViewById(R.id.books_grid_view);
+            booksGridView.setOnItemClickListener((parent, view, position, id) -> {
+                NavController nav = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+
+                BooksFragmentDirections.CreateBookAction action = BooksFragmentDirections.createBookAction();
+                action.setBookId(books.get(position).getId());
+                action.setCreate(false);
+
+                nav.navigate(action);
+            });
             booksGridView.setAdapter(booksAdapter);
         } catch (Exception ignored) {
         }
@@ -61,5 +76,17 @@ public class BooksFragment extends androidx.fragment.app.Fragment {
     private void bindShimmer() {
         shimmerLayout = requireView().findViewById(R.id.fragment_books_shimmer);
         shimmerLayout.showShimmerAdapter();
+    }
+
+    private void refreshBooksAdapter(List<BookEntity> newBooks) {
+        if (books != null && booksAdapter != null) {
+            books.clear();
+
+            if (newBooks != null) {
+                books.addAll(newBooks);
+            }
+
+            booksAdapter.notifyDataSetChanged();
+        }
     }
 }

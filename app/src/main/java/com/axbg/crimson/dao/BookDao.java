@@ -34,6 +34,6 @@ public interface BookDao {
     @Update
     int update(BookEntity bookEntity);
 
-    @Query("DELETE FROM quotes WHERE id = :id")
+    @Query("DELETE FROM books WHERE id = :id")
     int delete(long id);
 }

@@ -18,12 +18,7 @@
         tools:layout="@layout/fragment_books">
         <action
             android:id="@+id/create_book_action"
-            app:destination="@id/books_detail">
-            <argument
-                android:name="create"
-                android:defaultValue="true"
-                app:argType="boolean" />
-        </action>
+            app:destination="@id/books_detail" />
     </fragment>
 
     <fragment
@@ -42,7 +37,8 @@
             android:defaultValue="true" />
         <argument
             android:name="bookId"
-            android:defaultValue="0" />
+            android:defaultValue="0L"
+            app:argType="long" />
         <action
             android:id="@+id/action_books_detail_to_coverFragment"
             app:destination="@id/cover" />
