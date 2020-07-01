@@ -1,7 +1,6 @@
 package com.axbg.crimson.ui.books;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -25,10 +24,12 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.android.volley.Request;
+import com.android.volley.toolbox.StringRequest;
 import com.axbg.crimson.BuildConfig;
 import com.axbg.crimson.R;
-import com.axbg.crimson.network.HttpCall;
 import com.axbg.crimson.network.NetworkUtil;
+import com.axbg.crimson.network.VolleyManager;
 import com.axbg.crimson.network.object.OpenLibraryBook;
 import com.axbg.crimson.ui.books.adapter.OpenLibraryBooksAdapter;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
@@ -43,7 +44,6 @@ import java.util.List;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
-import static com.axbg.crimson.network.HttpMethods.GET_METHOD;
 
 
 public class CoverFragment extends Fragment {
@@ -85,22 +85,25 @@ public class CoverFragment extends Fragment {
         TextInputEditText searchQueryInput = requireView().findViewById(R.id.cover_search_input_text);
         Button searchButton = requireView().findViewById(R.id.cover_search_button);
         searchButton.setOnClickListener(v -> {
-            String searchQuery = searchQueryInput.getText() != null ? searchQueryInput.getText().toString()
-                    : "";
+            String searchQuery = searchQueryInput.getText() != null ?
+                    searchQueryInput.getText().toString() : "";
 
             if (!searchQuery.isEmpty()) {
-                @SuppressLint("StaticFieldLeak") HttpCall httpCall = new HttpCall() {
-                    @Override
-                    protected void onPostExecute(String s) {
-                        refreshBooksAdapter(OpenLibraryBook.fromJson(s));
-                        hideShimmer();
-                    }
-                };
+                StringRequest request = new StringRequest(Request.Method.GET, NetworkUtil.buildSearchUrl(searchQuery),
+                        response -> {
+                            refreshBooksAdapter(OpenLibraryBook.fromJson(response));
+                            hideShimmer();
+                        },
+                        error -> {
+                            hideShimmer();
+                            Toast.makeText(requireContext(), "Error during connection",
+                                    Toast.LENGTH_SHORT).show();
+                        });
 
                 hideKeyboard();
                 showShimmer();
                 refreshBooksAdapter(null);
-                httpCall.execute(GET_METHOD, NetworkUtil.buildSearchUrl(searchQuery));
+                VolleyManager.getInstance(requireContext()).addToQueue(request);
             } else {
                 Toast.makeText(requireContext(), "Query text cannot be empty", Toast.LENGTH_SHORT)
                         .show();
