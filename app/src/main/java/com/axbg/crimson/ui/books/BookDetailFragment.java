@@ -35,17 +35,22 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class BookDetailFragment extends Fragment {
-    private FragmentBookDetailBinding binding;
-    private BooksViewModel booksViewModel;
     private BookEntity existingBook;
+    private BooksViewModel booksViewModel;
+    private FragmentBookDetailBinding binding;
+    private ArrayAdapter<String> quotesAdapter;
+
     private String imageUrl;
     private boolean createdCustomCover;
+
+    private List<String> quotesText = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,6 +60,7 @@ public class BookDetailFragment extends Fragment {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         booksViewModel = new ViewModelProvider(requireActivity()).get(BooksViewModel.class);
+
         binding = FragmentBookDetailBinding.inflate(getLayoutInflater());
         return binding.getRoot();
     }
@@ -94,16 +100,12 @@ public class BookDetailFragment extends Fragment {
             binding.bookDetailAuthorText.setText(bookEntity.getAuthor());
             binding.bookDetailFinished.setChecked(bookEntity.isFinished());
 
-            booksViewModel.getBookDao().getQuotesByBookId(bookId).observe(getViewLifecycleOwner(), quoteEntities -> {
-                List<String> actualQuotes = quoteEntities.stream()
-                        .map(QuoteEntity::getShortText)
-                        .collect(Collectors.toList());
-
-                ArrayAdapter<String> quotesAdapter = new ArrayAdapter<>(requireContext(),
-                        android.R.layout.simple_list_item_1, actualQuotes);
-
-                binding.bookDetailQuotes.setAdapter(quotesAdapter);
-            });
+            booksViewModel.getBookDao().getQuotesByBookId(bookId).observe(getViewLifecycleOwner(),
+                    quoteEntities ->
+                            refreshQuotesAdapter(
+                                    quoteEntities.stream()
+                                            .map(QuoteEntity::getShortText)
+                                            .collect(Collectors.toList())));
         }
     }
 
@@ -115,8 +117,7 @@ public class BookDetailFragment extends Fragment {
                     try {
                         BitmapDrawable coverBitmap = (BitmapDrawable) binding.bookDetailCover.getDrawable();
                         downloadCover(book, coverBitmap.getBitmap());
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    } catch (IOException ignored) {
                     }
 
                     if (existingBook == null) {
@@ -132,15 +133,41 @@ public class BookDetailFragment extends Fragment {
             }
         });
 
-        bindCoverFragmentUrlListener();
         binding.bookDetailCover.setOnClickListener(v -> {
             NavController nav = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-            nav.navigate(R.id.cover);
+            nav.navigate(BookDetailFragmentDirections.addCoverAction());
         });
+
+        bindQuotesAdapter(quotesText);
+        bindCoverFragmentUrlListener();
+    }
+
+    private void bindQuotesAdapter(List<String> quotes) {
+        quotesAdapter = new ArrayAdapter<>(requireContext(),
+                android.R.layout.simple_list_item_1, quotes);
+
+        binding.bookDetailQuotes.setAdapter(quotesAdapter);
+        binding.bookDetailQuotes.setOnItemClickListener(((parent, view, position, id) -> {
+            // TODO
+            // implement view_book_quote_action transition
+        }));
+    }
+
+    private void refreshQuotesAdapter(List<String> newQuotes) {
+        if (quotesText != null && quotesAdapter != null) {
+            quotesText.clear();
+
+            if (newQuotes != null) {
+                quotesText.addAll(newQuotes);
+            }
+
+            quotesAdapter.notifyDataSetChanged();
+        }
     }
 
     private void bindCoverFragmentUrlListener() {
         NavController navController = NavHostFragment.findNavController(this);
+
         MutableLiveData<OpenLibraryBook> openBookData = Objects.requireNonNull(navController.getCurrentBackStackEntry())
                 .getSavedStateHandle()
                 .getLiveData("OPEN_BOOK");

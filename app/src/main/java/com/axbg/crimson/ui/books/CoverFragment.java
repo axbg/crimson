@@ -47,16 +47,19 @@ import static android.app.Activity.RESULT_OK;
 
 
 public class CoverFragment extends Fragment {
-    private ShimmerRecyclerView shimmerLayout;
-    private List<OpenLibraryBook> books = new ArrayList<>();
-    private OpenLibraryBooksAdapter booksAdapter;
     private Uri cameraPicture;
+    private ShimmerRecyclerView shimmerLayout;
+    private OpenLibraryBooksAdapter booksAdapter;
+
+    private List<OpenLibraryBook> books = new ArrayList<>();
+
     private ActivityResultLauncher<Uri> takePicture = registerForActivityResult(new ActivityResultContracts.TakePicture(),
             saved -> {
                 if (saved) {
                     cropPicture();
                 }
             });
+
     private ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
@@ -111,18 +114,6 @@ public class CoverFragment extends Fragment {
         });
     }
 
-    private void refreshBooksAdapter(List<OpenLibraryBook> newBooks) {
-        if (books != null && booksAdapter != null) {
-            books.clear();
-
-            if (newBooks != null) {
-                books.addAll(newBooks);
-            }
-
-            booksAdapter.notifyDataSetChanged();
-        }
-    }
-
     private void bindTakePhotoButton() {
         FloatingActionButton addBookFab = requireView().findViewById(R.id.cover_camera_fab);
         addBookFab.setOnClickListener(v -> {
@@ -168,6 +159,18 @@ public class CoverFragment extends Fragment {
         InputMethodManager inputManager = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (inputManager != null) {
             inputManager.hideSoftInputFromWindow(requireView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+
+    private void refreshBooksAdapter(List<OpenLibraryBook> newBooks) {
+        if (books != null && booksAdapter != null) {
+            books.clear();
+
+            if (newBooks != null) {
+                books.addAll(newBooks);
+            }
+
+            booksAdapter.notifyDataSetChanged();
         }
     }
 

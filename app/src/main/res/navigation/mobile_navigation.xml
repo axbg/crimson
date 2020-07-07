@@ -9,7 +9,11 @@
         android:id="@+id/navigation_quotes"
         android:name="com.axbg.crimson.ui.quotes.QuotesFragment"
         android:label="@string/TITLE_QUOTES"
-        tools:layout="@layout/fragment_quotes" />
+        tools:layout="@layout/fragment_quotes">
+        <action
+            android:id="@+id/create_quote_action"
+            app:destination="@id/quoteDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_books"
@@ -34,18 +38,39 @@
         tools:layout="@layout/fragment_book_detail">
         <argument
             android:name="create"
+            app:argType="boolean"
             android:defaultValue="true" />
         <argument
             android:name="bookId"
             android:defaultValue="0L"
             app:argType="long" />
         <action
-            android:id="@+id/action_books_detail_to_coverFragment"
+            android:id="@+id/add_cover_action"
             app:destination="@id/cover" />
+        <action
+            android:id="@+id/view_book_quote_action"
+            app:destination="@id/quoteDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/cover"
         android:name="com.axbg.crimson.ui.books.CoverFragment"
         android:label="fragment_cover"
         tools:layout="@layout/fragment_cover" />
+    <fragment
+        android:id="@+id/quoteDetailFragment"
+        android:name="com.axbg.crimson.ui.quotes.QuoteDetailFragment"
+        android:label="QuoteDetailFragment">
+        <argument
+            android:name="create"
+            android:defaultValue="true"
+            app:argType="boolean" />
+        <argument
+            android:name="quoteId"
+            android:defaultValue="0L"
+            app:argType="long" />
+        <argument
+            android:name="bookTitle"
+            android:defaultValue='""'
+            app:argType="string" />
+    </fragment>
 </navigation>

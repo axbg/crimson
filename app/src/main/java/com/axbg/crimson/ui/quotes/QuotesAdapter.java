@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,7 +15,6 @@ import com.axbg.crimson.db.entity.BookEntity;
 import com.axbg.crimson.db.entity.QuoteEntity;
 
 import java.util.List;
-import java.util.Objects;
 
 public class QuotesAdapter extends ArrayAdapter<QuoteEntity> {
     private Context context;
@@ -58,9 +56,6 @@ public class QuotesAdapter extends ArrayAdapter<QuoteEntity> {
             viewHolder.book.setText(getBookTitle(quote.getBook()));
             viewHolder.date.setText(quote.getAddedAt().toString());
         }
-
-        convertView.setOnClickListener(v -> Toast.makeText(getContext(),
-                String.valueOf(Objects.requireNonNull(quote).getId()), Toast.LENGTH_SHORT).show());
 
         return convertView;
     }

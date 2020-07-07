@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerInParent="false"
+    android:layout_centerVertical="false">
+
+    <EditText
+        android:id="@+id/quote_detail_text"
+        android:layout_width="350dp"
+        android:layout_height="272dp"
+        android:layout_marginTop="36dp"
+        android:autofillHints="@string/QUOTE_DETAIL_TEXT"
+        android:background="@android:color/transparent"
+        android:ems="10"
+        android:gravity="top|start"
+        android:inputType="textMultiLine"
+        android:scrollbars="vertical"
+        android:text="@string/QUOTE_DETAIL_TEXT"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/quote_detail_book"
+        android:layout_width="249dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="116dp"
+        android:text="@string/DETAIL_BOOK_TITLE"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/quote_detail_text" />
+
+    <Button
+        android:id="@+id/quote_detail_book_update"
+        android:layout_width="82dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="112dp"
+        android:text="@string/DETAIL_QUOTE_BOOK_UPDATE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.295"
+        app:layout_constraintStart_toEndOf="@+id/quote_detail_book"
+        app:layout_constraintTop_toBottomOf="@+id/quote_detail_text" />
+
+    <TextView
+        android:id="@+id/quote_detail_added"
+        android:layout_width="334dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="48dp"
+        android:text="@string/DETAIL_QUOTE_ADDED_AT"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/quote_detail_book" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/quote_detail_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:clickable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toEndOf="@+id/quote_detail_gallery"
+        app:layout_constraintTop_toBottomOf="@+id/quote_detail_text"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/quote_detail_gallery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="20dp"
+        android:clickable="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/quote_detail_text"
+        app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+    <Button
+        android:id="@+id/quote_detail_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/DETAIL_BOOK_SAVE"
+        app:layout_constraintEnd_toStartOf="@+id/quote_detail_remove"
+        app:layout_constraintHorizontal_bias="0.31"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/quote_detail_added" />
+
+    <Button
+        android:id="@+id/quote_detail_remove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="88dp"
+        android:text="@string/DETAIL_BOOK_REMOVE"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/quote_detail_added" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+

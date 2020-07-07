@@ -25,6 +25,7 @@ public class BooksFragment extends androidx.fragment.app.Fragment {
     private BooksViewModel booksViewModel;
     private ShimmerRecyclerView shimmerLayout;
     private BooksAdapter booksAdapter;
+
     private List<BookEntity> books = new ArrayList<>();
 
     @Override
@@ -50,7 +51,7 @@ public class BooksFragment extends androidx.fragment.app.Fragment {
         FloatingActionButton addBookFab = requireView().findViewById(R.id.add_book_fab);
         addBookFab.setOnClickListener(v -> {
             NavController nav = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-            nav.navigate(R.id.books_detail);
+            nav.navigate(BooksFragmentDirections.createBookAction());
         });
     }
 
