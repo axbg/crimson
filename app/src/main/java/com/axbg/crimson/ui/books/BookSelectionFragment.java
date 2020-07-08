@@ -8,6 +8,8 @@ import android.widget.GridView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -16,12 +18,12 @@ import com.axbg.crimson.R;
 import com.axbg.crimson.db.entity.BookEntity;
 import com.axbg.crimson.ui.books.adapter.BooksAdapter;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public class BooksFragment extends androidx.fragment.app.Fragment {
+public class BookSelectionFragment extends Fragment {
     private BooksViewModel booksViewModel;
     private ShimmerRecyclerView shimmerLayout;
     private BooksAdapter booksAdapter;
@@ -31,13 +33,12 @@ public class BooksFragment extends androidx.fragment.app.Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         booksViewModel = new ViewModelProvider(requireActivity()).get(BooksViewModel.class);
-        return inflater.inflate(R.layout.fragment_books, container, false);
+        return inflater.inflate(R.layout.fragment_book_selection, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        bindAddBookButton();
         bindShimmer();
         bindGridView(books);
 
@@ -47,39 +48,29 @@ public class BooksFragment extends androidx.fragment.app.Fragment {
         });
     }
 
-    private void bindAddBookButton() {
-        FloatingActionButton addBookFab = requireView().findViewById(R.id.add_book_fab);
-        addBookFab.setOnClickListener(v -> {
-            NavController nav = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-            nav.navigate(BooksFragmentDirections.createBookAction());
-        });
-    }
-
     private void bindGridView(List<BookEntity> books) {
         try {
             booksAdapter = new BooksAdapter(books, R.layout.adapter_books, requireContext());
+            GridView booksGridView = requireView().findViewById(R.id.book_selection_grid_view);
 
-            GridView booksGridView = requireView().findViewById(R.id.books_grid_view);
-
-            booksGridView.setOnItemClickListener((parent, view, position, id) -> {
+            booksGridView.setOnItemClickListener(((parent, view, position, id) -> {
                 NavController nav = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
 
-                BooksFragmentDirections.CreateBookAction action = BooksFragmentDirections.createBookAction();
-                action.setBookId(books.get(position).getId());
-                action.setCreate(false);
+                SavedStateHandle handle = Objects.requireNonNull(nav.getPreviousBackStackEntry())
+                        .getSavedStateHandle();
+                handle.set("BOOK_ID", books.get(position).getId());
+                handle.set("BOOK_TITLE", books.get(position).getTitle());
 
-                nav.navigate(action);
-            });
+                nav.popBackStack();
+            }));
 
             booksGridView.setAdapter(booksAdapter);
-        } catch (
-                Exception ignored) {
+        } catch (Exception ignored) {
         }
-
     }
 
     private void bindShimmer() {
-        shimmerLayout = requireView().findViewById(R.id.fragment_books_shimmer);
+        shimmerLayout = requireView().findViewById(R.id.fragment_book_selection_shimmer);
         shimmerLayout.showShimmerAdapter();
     }
 

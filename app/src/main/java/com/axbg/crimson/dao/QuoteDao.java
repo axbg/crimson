@@ -2,7 +2,6 @@ package com.axbg.crimson.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
@@ -31,6 +30,6 @@ public interface QuoteDao {
     @Update
     int update(QuoteEntity quoteEntity);
 
-    @Delete
-    int delete(QuoteEntity quote);
+    @Query("DELETE FROM quotes WHERE id = :id")
+    int delete(long id);
 }

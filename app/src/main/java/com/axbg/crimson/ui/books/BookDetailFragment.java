@@ -39,18 +39,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class BookDetailFragment extends Fragment {
     private BookEntity existingBook;
     private BooksViewModel booksViewModel;
     private FragmentBookDetailBinding binding;
-    private ArrayAdapter<String> quotesAdapter;
+    private ArrayAdapter<QuoteEntity> quotesAdapter;
 
     private String imageUrl;
     private boolean createdCustomCover;
 
-    private List<String> quotesText = new ArrayList<>();
+    private List<QuoteEntity> quotes = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,6 +81,38 @@ public class BookDetailFragment extends Fragment {
         bindLayout();
     }
 
+    private void bindLayout() {
+        binding.bookDetailAdd.setOnClickListener(v -> {
+            BookEntity book = getInputValues();
+            if (book != null) {
+                AsyncTask.execute(() -> {
+                    try {
+                        BitmapDrawable coverBitmap = (BitmapDrawable) binding.bookDetailCover.getDrawable();
+                        downloadCover(book, coverBitmap.getBitmap());
+                    } catch (IOException ignored) {
+                    }
+
+                    if (existingBook == null) {
+                        booksViewModel.getBookDao().create(book);
+                    } else {
+                        synchronizeBooks(existingBook, book);
+                        booksViewModel.getBookDao().update(existingBook);
+                    }
+
+                    Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
+                            .navigate(R.id.navigation_books);
+                });
+            }
+        });
+
+        binding.bookDetailCover.setOnClickListener(v -> {
+            NavController nav = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+            nav.navigate(BookDetailFragmentDirections.addCoverAction());
+        });
+
+        bindCoverFragmentUrlListener();
+    }
+
     private void buildViewLayout(long bookId) {
         binding.bookDetailQuotes.setVisibility(View.VISIBLE);
         binding.bookDetailRemove.setVisibility(View.VISIBLE);
@@ -101,64 +132,33 @@ public class BookDetailFragment extends Fragment {
             binding.bookDetailFinished.setChecked(bookEntity.isFinished());
 
             booksViewModel.getBookDao().getQuotesByBookId(bookId).observe(getViewLifecycleOwner(),
-                    quoteEntities ->
-                            refreshQuotesAdapter(
-                                    quoteEntities.stream()
-                                            .map(QuoteEntity::getShortText)
-                                            .collect(Collectors.toList())));
+                    this::refreshQuotesAdapter);
+
+            bindQuotesAdapter(quotes, bookEntity.getTitle());
         }
     }
 
-    private void bindLayout() {
-        binding.bookDetailAdd.setOnClickListener(v -> {
-            BookEntity book = getInputValues();
-            if (book != null) {
-                AsyncTask.execute(() -> {
-                    try {
-                        BitmapDrawable coverBitmap = (BitmapDrawable) binding.bookDetailCover.getDrawable();
-                        downloadCover(book, coverBitmap.getBitmap());
-                    } catch (IOException ignored) {
-                    }
-
-                    if (existingBook == null) {
-                        booksViewModel.getBookDao().create(book);
-                    } else {
-                        synchronizeBooks(existingBook, book);
-                        booksViewModel.getBookDao().update(existingBook);
-                    }
-
-                    NavController nav = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-                    nav.navigate(R.id.navigation_books);
-                });
-            }
-        });
-
-        binding.bookDetailCover.setOnClickListener(v -> {
-            NavController nav = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-            nav.navigate(BookDetailFragmentDirections.addCoverAction());
-        });
-
-        bindQuotesAdapter(quotesText);
-        bindCoverFragmentUrlListener();
-    }
-
-    private void bindQuotesAdapter(List<String> quotes) {
-        quotesAdapter = new ArrayAdapter<>(requireContext(),
-                android.R.layout.simple_list_item_1, quotes);
+    private void bindQuotesAdapter(List<QuoteEntity> quotes, String bookTitle) {
+        quotesAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, quotes);
 
         binding.bookDetailQuotes.setAdapter(quotesAdapter);
         binding.bookDetailQuotes.setOnItemClickListener(((parent, view, position, id) -> {
-            // TODO
-            // implement view_book_quote_action transition
+            BookDetailFragmentDirections.ViewBookQuoteAction action = BookDetailFragmentDirections.viewBookQuoteAction();
+
+            action.setCreate(false);
+            action.setQuoteId(quotes.get(position).getId());
+            action.setBookTitle(bookTitle);
+
+            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
         }));
     }
 
-    private void refreshQuotesAdapter(List<String> newQuotes) {
-        if (quotesText != null && quotesAdapter != null) {
-            quotesText.clear();
+    private void refreshQuotesAdapter(List<QuoteEntity> newQuotes) {
+        if (quotes != null && quotesAdapter != null) {
+            quotes.clear();
 
             if (newQuotes != null) {
-                quotesText.addAll(newQuotes);
+                quotes.addAll(newQuotes);
             }
 
             quotesAdapter.notifyDataSetChanged();

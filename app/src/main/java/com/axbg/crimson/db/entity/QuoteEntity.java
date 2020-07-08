@@ -10,6 +10,8 @@ import androidx.room.TypeConverters;
 
 import com.axbg.crimson.db.Converters;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.time.LocalDate;
 
 import lombok.Data;
@@ -49,5 +51,11 @@ public class QuoteEntity {
 
     public String getShortText() {
         return this.text.length() > 300 ? this.text.substring(0, 300) + "..." : this.text;
+    }
+
+    @NotNull
+    @Override
+    public String toString() {
+        return getShortText();
     }
 }

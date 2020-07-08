@@ -72,5 +72,13 @@
             android:name="bookTitle"
             android:defaultValue='""'
             app:argType="string" />
+        <action
+            android:id="@+id/select_book_action"
+            app:destination="@id/bookSelectionFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/bookSelectionFragment"
+        android:name="com.axbg.crimson.ui.books.BookSelectionFragment"
+        android:label="fragment_book_selection"
+        tools:layout="@layout/fragment_book_selection" />
 </navigation>

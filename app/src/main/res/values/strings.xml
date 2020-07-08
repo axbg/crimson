@@ -31,4 +31,5 @@
     <string name="DETAIL_QUOTE_ADDED_AT">Added at</string>
     <string name="DETAIL_QUOTE_ADD">Add</string>
     <string name="DETAIL_QUOTE_REMOVE">Remove</string>
+    <string name="DETAIL_QUOTE_BOOK">Book</string>
 </resources>
