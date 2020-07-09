@@ -17,7 +17,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.time.LocalDate;
 
 public class LandingActivity extends AppCompatActivity {
-    private BooksViewModel booksViewModel;
     private DatabaseManager databaseManager;
 
     @Override
@@ -39,7 +38,7 @@ public class LandingActivity extends AppCompatActivity {
     }
 
     private void bindViewModels() {
-        booksViewModel = new ViewModelProvider(this).get(BooksViewModel.class);
+        BooksViewModel booksViewModel = new ViewModelProvider(this).get(BooksViewModel.class);
         QuotesViewModel quotesViewModel = new ViewModelProvider(this).get(QuotesViewModel.class);
         quotesViewModel.setGetBookByIdLambda(aVoid -> booksViewModel.getBooksHashMap());
         try {

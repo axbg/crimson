@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,38 +11,58 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.axbg.crimson.R;
+import com.axbg.crimson.databinding.FragmentStatisticsBinding;
+import com.axbg.crimson.ui.books.BooksViewModel;
+import com.axbg.crimson.ui.quotes.QuotesViewModel;
 
 public class StatisticsFragment extends Fragment {
+    private QuotesViewModel quotesViewModel;
+    private BooksViewModel booksViewModel;
+    private FragmentStatisticsBinding binding;
 
-    private StatisticsViewModel statisticsViewModel;
+    private float numberOfBooks = 0;
+    private float numberOfQuotes = 0;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        statisticsViewModel = new ViewModelProvider(this).get(StatisticsViewModel.class);
-        return inflater.inflate(R.layout.fragment_statistics, container, false);
+        booksViewModel = new ViewModelProvider(requireActivity()).get(BooksViewModel.class);
+        quotesViewModel = new ViewModelProvider(requireActivity()).get(QuotesViewModel.class);
+
+        binding = FragmentStatisticsBinding.inflate(getLayoutInflater());
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         bindProfilePictureClick();
         bindStatistics();
     }
 
     private void bindProfilePictureClick() {
-        ImageView profilePicture = requireView().findViewById(R.id.statistics_profile_picture);
-        profilePicture.setOnClickListener(v -> Toast.makeText(requireContext(),
+        binding.statisticsProfilePicture.setOnClickListener(v -> Toast.makeText(requireContext(),
                 "You're awesome!", Toast.LENGTH_SHORT).show());
     }
 
     private void bindStatistics() {
-        TextView quotesNo = requireView().findViewById(R.id.statistics_quotes_no);
-        quotesNo.setText(String.valueOf(statisticsViewModel.getQuotesNumber()));
+        booksViewModel.getLiveDataBooks().observe(getViewLifecycleOwner(),
+                (books) -> {
+                    numberOfBooks = (float) books.size();
+                    binding.statisticsBooksNo.setText(String.valueOf((int) numberOfBooks));
+                    calculateQuotesRate();
+                });
 
-        TextView booksNo = requireView().findViewById(R.id.statistics_books_no);
-        booksNo.setText(String.valueOf(statisticsViewModel.getBooksNumber()));
+        quotesViewModel.getLiveDataQuotes().observe(getViewLifecycleOwner(),
+                (quotes) -> {
+                    numberOfQuotes = (float) quotes.size();
+                    binding.statisticsQuotesNo.setText(String.valueOf((int) numberOfQuotes));
+                    calculateQuotesRate();
+                });
+    }
 
-        TextView quotesRatio = requireView().findViewById(R.id.statistics_quotes_rate);
-        quotesRatio.setText(String.valueOf(statisticsViewModel.getQuotesRatio()));
+    private void calculateQuotesRate() {
+        if (numberOfBooks != 0 && numberOfQuotes != 0) {
+            binding.statisticsQuotesRate.setText(String.valueOf(numberOfQuotes / numberOfBooks));
+        }
     }
 }

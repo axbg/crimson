@@ -28,7 +28,6 @@ import com.axbg.crimson.BuildConfig;
 import com.axbg.crimson.R;
 import com.axbg.crimson.databinding.FragmentQuoteDetailBinding;
 import com.axbg.crimson.db.entity.QuoteEntity;
-import com.axbg.crimson.ui.books.BooksViewModel;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.jetbrains.annotations.NotNull;
@@ -41,13 +40,12 @@ import java.util.Objects;
 import static android.app.Activity.RESULT_OK;
 
 public class QuoteDetailFragment extends Fragment {
-    FragmentQuoteDetailBinding binding;
-    QuotesViewModel quotesViewModel;
-    BooksViewModel booksViewModel;
+    private FragmentQuoteDetailBinding binding;
+    private QuotesViewModel quotesViewModel;
 
-    long bookId = 0;
-    QuoteEntity existingQuote;
-    Uri quotePicture;
+    private long bookId = 0;
+    private QuoteEntity existingQuote;
+    private Uri quotePicture;
 
     private ActivityResultLauncher<Uri> takePicture = registerForActivityResult(new ActivityResultContracts.TakePicture(),
             saved -> {
@@ -75,7 +73,6 @@ public class QuoteDetailFragment extends Fragment {
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         quotesViewModel = new ViewModelProvider(requireActivity()).get(QuotesViewModel.class);
-        booksViewModel = new ViewModelProvider(requireActivity()).get(BooksViewModel.class);
 
         binding = FragmentQuoteDetailBinding.inflate(getLayoutInflater());
         return binding.getRoot();
@@ -126,7 +123,7 @@ public class QuoteDetailFragment extends Fragment {
             if (quote != null) {
                 AsyncTask.execute(() -> {
                     if (existingQuote == null) {
-                        createQuote(quote);
+                        quotesViewModel.getQuoteDao().create(quote);
                     } else {
                         synchronizeQuotes(existingQuote, quote);
                         quotesViewModel.getQuoteDao().update(existingQuote);
@@ -169,18 +166,13 @@ public class QuoteDetailFragment extends Fragment {
             return null;
         }
 
-        return new QuoteEntity(text, LocalDate.now(), bookId);
-    }
-
-    private void createQuote(QuoteEntity quote) {
         binding.quoteDetailBook.setError(null);
-
-        if (quote.getBookId() == 0) {
+        if (bookId == 0 && existingQuote == null) {
             binding.quoteDetailBook.setError("You should select a book first");
-            return;
+            return null;
         }
 
-        quotesViewModel.getQuoteDao().create(quote);
+        return new QuoteEntity(text, LocalDate.now(), bookId);
     }
 
     private void synchronizeQuotes(QuoteEntity existingQuote, QuoteEntity quoteEntity) {
