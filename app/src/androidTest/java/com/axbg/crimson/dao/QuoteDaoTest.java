@@ -104,8 +104,7 @@ public class QuoteDaoTest {
 
     @Test
     public void delete() {
-        QuoteEntity quoteEntity = db.quoteDao().getById(1);
-        long result = db.quoteDao().delete(quoteEntity);
+        long result = db.quoteDao().delete(1);
 
         QuoteEntity updatedQuoteEntity = db.quoteDao().getById(1);
 

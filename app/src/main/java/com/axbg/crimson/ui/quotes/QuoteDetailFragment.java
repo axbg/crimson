@@ -44,14 +44,20 @@ public class QuoteDetailFragment extends Fragment {
     private QuotesViewModel quotesViewModel;
 
     private long bookId = 0;
-    private QuoteEntity existingQuote;
     private Uri quotePicture;
+    private QuoteEntity existingQuote;
 
     private ActivityResultLauncher<Uri> takePicture = registerForActivityResult(new ActivityResultContracts.TakePicture(),
             saved -> {
                 if (saved) {
                     cropPicture();
                 }
+            });
+
+    private ActivityResultLauncher<String> galleryPick = registerForActivityResult(new ActivityResultContracts.GetContent(),
+            uri -> {
+                quotePicture = uri;
+                cropPicture();
             });
 
     private ActivityResultLauncher<String> requestPermissionLauncher =
@@ -106,9 +112,7 @@ public class QuoteDetailFragment extends Fragment {
             }
         });
 
-        binding.quoteDetailGallery.setOnClickListener(v -> {
-            // implement Gallery selection then launch cut
-        });
+        binding.quoteDetailGallery.setOnClickListener(v -> galleryPick.launch("image/*"));
 
         bindBookSelectListener();
 
