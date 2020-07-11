@@ -28,6 +28,9 @@ import com.axbg.crimson.BuildConfig;
 import com.axbg.crimson.R;
 import com.axbg.crimson.databinding.FragmentQuoteDetailBinding;
 import com.axbg.crimson.db.entity.QuoteEntity;
+import com.google.mlkit.vision.common.InputImage;
+import com.google.mlkit.vision.text.TextRecognition;
+import com.google.mlkit.vision.text.TextRecognizer;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.jetbrains.annotations.NotNull;
@@ -151,6 +154,10 @@ public class QuoteDetailFragment extends Fragment {
 
         binding.quoteDetailBook.setText(bookTitle);
 
+        binding.quoteDetailText.setCursorVisible(false);
+        binding.quoteDetailText.setOnClickListener((view) ->
+                binding.quoteDetailText.setCursorVisible(true));
+
         AsyncTask.execute(() -> {
             existingQuote = quotesViewModel.getQuoteDao().getById(quoteId);
 
@@ -235,9 +242,28 @@ public class QuoteDetailFragment extends Fragment {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 quotePicture = CropImage.getActivityResult(data).getUri();
-                Toast.makeText(requireContext(), "Crop successful", Toast.LENGTH_SHORT).show();
-                // launch OCR
+                detectText();
             }
+        }
+    }
+
+    private void detectText() {
+        try {
+            InputImage quoteTempImage = InputImage.fromFilePath(requireContext(), quotePicture);
+            TextRecognizer recognizer = TextRecognition.getClient();
+
+            recognizer.process(quoteTempImage)
+                    .addOnSuccessListener(text -> {
+                        binding.quoteDetailText.setText("");
+                        String extractedText = text.getText();
+                        binding.quoteDetailText.setText(extractedText);
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(requireContext(),
+                            "Failure on text detection. Please retry!",
+                            Toast.LENGTH_SHORT).show());
+        } catch (IOException ignored) {
+            Toast.makeText(requireContext(), "Error on photo processing", Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 }

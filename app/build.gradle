@@ -70,6 +70,9 @@ dependencies {
     // picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+    // ml-kit text-recognition
+    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:16.1.0'
+
     // android-image-cropper
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
 
