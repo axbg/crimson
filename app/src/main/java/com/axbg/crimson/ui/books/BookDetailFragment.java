@@ -1,5 +1,6 @@
 package com.axbg.crimson.ui.books;
 
+import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -116,11 +117,19 @@ public class BookDetailFragment extends Fragment {
     private void buildViewLayout(long bookId) {
         binding.bookDetailQuotes.setVisibility(View.VISIBLE);
         binding.bookDetailRemove.setVisibility(View.VISIBLE);
-        binding.bookDetailRemove.setOnClickListener(v -> AsyncTask.execute(() -> {
-            booksViewModel.getBookDao().delete(bookId);
-            NavController nav = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-            nav.navigate(R.id.navigation_books);
-        }));
+        binding.bookDetailRemove.setOnClickListener(v ->
+                new AlertDialog.Builder(requireContext())
+                        .setTitle("Removing book")
+                        .setMessage("Are you sure you want to remove this book?\n" +
+                                "Its quotes will also be removed")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(R.string.DIALOG_YES, (dialog, which) -> {
+                            AsyncTask.execute(() -> booksViewModel.getBookDao().delete(bookId));
+                            NavController nav = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+                            nav.popBackStack();
+                        })
+                        .setNegativeButton(R.string.DIALOG_NO, null)
+                        .show());
 
         BookEntity bookEntity = Objects.requireNonNull(booksViewModel.getBooksHashMap().getValue()).get(bookId);
         existingBook = bookEntity;

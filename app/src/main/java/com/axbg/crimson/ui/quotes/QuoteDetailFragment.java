@@ -1,6 +1,7 @@
 package com.axbg.crimson.ui.quotes;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -146,11 +147,18 @@ public class QuoteDetailFragment extends Fragment {
     private void bindViewLayout(long quoteId, String bookTitle) {
         binding.quoteDetailAdded.setVisibility(View.VISIBLE);
         binding.quoteDetailRemove.setVisibility(View.VISIBLE);
-        binding.quoteDetailRemove.setOnClickListener(v -> {
-            AsyncTask.execute(() -> quotesViewModel.getQuoteDao().delete(quoteId));
-            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
-                    .popBackStack();
-        });
+        binding.quoteDetailRemove.setOnClickListener(v ->
+                new AlertDialog.Builder(requireContext())
+                        .setTitle("Removing quote")
+                        .setMessage("Are you sure you want to remove this quote?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(R.string.DIALOG_YES, (dialog, which) -> {
+                            AsyncTask.execute(() -> quotesViewModel.getQuoteDao().delete(quoteId));
+                            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
+                                    .popBackStack();
+                        })
+                        .setNegativeButton(R.string.DIALOG_NO, null)
+                        .show());
 
         binding.quoteDetailBook.setText(bookTitle);
 

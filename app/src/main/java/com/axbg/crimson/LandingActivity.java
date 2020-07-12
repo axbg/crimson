@@ -9,24 +9,19 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.axbg.crimson.db.DatabaseManager;
-import com.axbg.crimson.db.entity.QuoteEntity;
 import com.axbg.crimson.ui.books.BooksViewModel;
 import com.axbg.crimson.ui.quotes.QuotesViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.time.LocalDate;
-
 public class LandingActivity extends AppCompatActivity {
-    private DatabaseManager databaseManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
 
-        databaseManager = DatabaseManager.getInstance(getApplicationContext());
+        DatabaseManager.getInstance(getApplicationContext());
 
-//        addDummyData();
         bindNavigation();
         bindViewModels();
     }
@@ -45,20 +40,13 @@ public class LandingActivity extends AppCompatActivity {
             quotesViewModel.loadQuotes();
         } catch (Exception ignored) {
         }
-    }
 
-    private void addDummyData() {
-        databaseManager.bookDao().getAll().observe(this, (books) -> {
+        booksViewModel.getLiveDataBooks().observe(this, (books) -> {
             if (books.size() == 0) {
-                new Thread() {
-                    @Override
-                    public void run() {
-                        for (int i = 0; i < 10; i++) {
-                            databaseManager.quoteDao().create(new QuoteEntity("Quote" + i, LocalDate.now(), 6));
-                        }
-                    }
-                }.start();
+                Navigation.findNavController(this, R.id.nav_host_fragment)
+                        .navigate(R.id.navigation_books);
             }
+            booksViewModel.getLiveDataBooks().removeObservers(this);
         });
     }
 }
