@@ -41,7 +41,7 @@ public class StatisticsFragment extends Fragment {
     }
 
     private void bindProfilePictureClick() {
-        binding.statisticsProfilePicture.setOnClickListener(v ->
+        binding.fragmentStatisticsProfilePicture.setOnClickListener(v ->
                 Toast.makeText(requireContext(), R.string.YOU_AWESOME_EASTER_EGG, Toast.LENGTH_SHORT).show());
     }
 
@@ -49,21 +49,21 @@ public class StatisticsFragment extends Fragment {
         booksViewModel.getLiveDataBooks().observe(getViewLifecycleOwner(),
                 (books) -> {
                     numberOfBooks = (float) books.size();
-                    binding.statisticsBooksNo.setText(String.valueOf((int) numberOfBooks));
+                    binding.fragmentStatisticsBooksNo.setText(String.valueOf((int) numberOfBooks));
                     calculateQuotesRate();
                 });
 
         quotesViewModel.getLiveDataQuotes().observe(getViewLifecycleOwner(),
                 (quotes) -> {
                     numberOfQuotes = (float) quotes.size();
-                    binding.statisticsQuotesNo.setText(String.valueOf((int) numberOfQuotes));
+                    binding.fragmentStatisticsQuotesNo.setText(String.valueOf((int) numberOfQuotes));
                     calculateQuotesRate();
                 });
     }
 
     private void calculateQuotesRate() {
         if (numberOfBooks != 0 && numberOfQuotes != 0) {
-            binding.statisticsQuotesRate.setText(String.valueOf(numberOfQuotes / numberOfBooks));
+            binding.fragmentStatisticsQuotesRate.setText(String.valueOf(numberOfQuotes / numberOfBooks));
         }
     }
 }

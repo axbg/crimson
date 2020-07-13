@@ -27,8 +27,8 @@ public class LandingActivity extends AppCompatActivity {
     }
 
     private void bindNavigation() {
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        BottomNavigationView navView = findViewById(R.id.activity_landing_nav_view);
+        NavController navController = Navigation.findNavController(this, R.id.activity_landing_nav_host_fragment);
         NavigationUI.setupWithNavController(navView, navController);
     }
 
@@ -43,7 +43,7 @@ public class LandingActivity extends AppCompatActivity {
 
         booksViewModel.getLiveDataBooks().observe(this, (books) -> {
             if (books.size() == 0) {
-                Navigation.findNavController(this, R.id.nav_host_fragment)
+                Navigation.findNavController(this, R.id.activity_landing_nav_host_fragment)
                         .navigate(R.id.navigation_books);
             }
             booksViewModel.getLiveDataBooks().removeObservers(this);

@@ -56,8 +56,8 @@ public class BooksAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(resource, parent, false);
             viewHolder = new ViewHolder();
 
-            viewHolder.cover = convertView.findViewById(R.id.bookList_image);
-            viewHolder.title = convertView.findViewById(R.id.bookList_book);
+            viewHolder.cover = convertView.findViewById(R.id.adapter_books_image);
+            viewHolder.title = convertView.findViewById(R.id.adapter_books_title);
 
             convertView.setTag(viewHolder);
         } else {

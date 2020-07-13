@@ -1,8 +1,8 @@
 <resources>
-    <string name="DIALOG_NO">No</string>
-    <string name="DIALOG_YES">Yes</string>
     <string name="NUMBER_PLACEHOLDER">0</string>
     <string name="DATE_PLACEHOLDER">DD/MM/YYYY</string>
+    <string name="DIALOG_YES">Yes</string>
+    <string name="DIALOG_NO">No</string>
 
     <string name="APP_NAME">crimson</string>
 
@@ -29,12 +29,12 @@
     <string name="ADDED_AT">Added at</string>
     <string name="SELECT">Update</string>
 
-    <string name="INSERT_QUOTE_MESSAGE">Write down a quote that inspired you or capture it using your camera</string>
-    <string name="REMOVE_BOOK_MESSAGE">Are you sure you want to remove this book?
-        Its quotes will also be removed</string>
-    <string name="REMOVE_QUOTE_MESSAGE">Are you sure you want to remove this quote?</string>
     <string name="CAMERA_PERMISSION_MESSAGE">Camera permission is required</string>
     <string name="YOU_AWESOME_EASTER_EGG">You\'re awesome!</string>
+    <string name="INSERT_QUOTE_MESSAGE">Write down a quote that inspired you or capture it using your camera</string>
+    <string name="REMOVE_QUOTE_MESSAGE">Are you sure you want to remove this quote?</string>
+    <string name="REMOVE_BOOK_MESSAGE">Are you sure you want to remove this book?
+        Its quotes will also be removed</string>
 
     <string name="ERROR_TITLE_EMPTY">Title cannot be empty</string>
     <string name="ERROR_AUTHOR_EMPTY">Cover image cannot be empty</string>

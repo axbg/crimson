@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/quoteList_quote_shimmer"
+        android:id="@+id/shimmer_adapter_quotes_quote"
         android:layout_width="366dp"
         android:layout_height="91dp"
         android:layout_marginTop="16dp"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/quoteList_date_shimmer"
+        android:id="@+id/shimmer_adapter_quotes_date"
         android:layout_width="130dp"
         android:layout_height="25dp"
         android:layout_marginStart="22dp"
@@ -26,10 +26,10 @@
         android:background="@color/shimmerGray"
         android:focusable="false"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/quoteList_quote_shimmer" />
+        app:layout_constraintTop_toBottomOf="@+id/shimmer_adapter_quotes_quote" />
 
     <TextView
-        android:id="@+id/quoteList_book_shimmer"
+        android:id="@+id/shimmer_adapter_quotes_book"
         android:layout_width="200dp"
         android:layout_height="25dp"
         android:layout_marginTop="8dp"
@@ -37,6 +37,6 @@
         android:background="@color/shimmerGray"
         android:focusable="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/quoteList_quote_shimmer" />
+        app:layout_constraintTop_toBottomOf="@+id/shimmer_adapter_quotes_quote" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -51,10 +51,10 @@ public class BookSelectionFragment extends Fragment {
     private void bindGridView(List<BookEntity> books) {
         try {
             booksAdapter = new BooksAdapter(books, R.layout.adapter_books, requireContext());
-            GridView booksGridView = requireView().findViewById(R.id.book_selection_grid_view);
+            GridView booksGridView = requireView().findViewById(R.id.fragment_book_selection_grid_view);
 
             booksGridView.setOnItemClickListener(((parent, view, position, id) -> {
-                NavController nav = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+                NavController nav = Navigation.findNavController(requireActivity(), R.id.activity_landing_nav_host_fragment);
 
                 SavedStateHandle handle = Objects.requireNonNull(nav.getPreviousBackStackEntry())
                         .getSavedStateHandle();
@@ -70,7 +70,7 @@ public class BookSelectionFragment extends Fragment {
     }
 
     private void bindShimmer() {
-        shimmerLayout = requireView().findViewById(R.id.fragment_book_selection_shimmer);
+        shimmerLayout = requireView().findViewById(R.id.fragment_fragment_book_selection_shimmer);
         shimmerLayout.showShimmerAdapter();
     }
 

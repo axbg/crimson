@@ -42,9 +42,9 @@ public class QuotesAdapter extends ArrayAdapter<QuoteEntity> {
             convertView = LayoutInflater.from(context).inflate(resource, parent, false);
             viewHolder = new ViewHolder();
 
-            viewHolder.quote = convertView.findViewById(R.id.quoteList_quote);
-            viewHolder.book = convertView.findViewById(R.id.quoteList_book);
-            viewHolder.date = convertView.findViewById(R.id.quoteList_date);
+            viewHolder.quote = convertView.findViewById(R.id.adapter_quotes_text);
+            viewHolder.book = convertView.findViewById(R.id.adapter_quotes_book);
+            viewHolder.date = convertView.findViewById(R.id.adapter_quotes_added);
 
             convertView.setTag(viewHolder);
         } else {

@@ -9,7 +9,7 @@
     android:padding="8dp">
 
     <ImageView
-        android:id="@+id/bookList_image"
+        android:id="@+id/adapter_books_image"
         android:layout_width="82dp"
         android:layout_height="123dp"
         android:layout_marginStart="16dp"
@@ -22,13 +22,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/bookList_book"
+        android:id="@+id/adapter_books_title"
         android:layout_width="82dp"
         android:layout_height="42dp"
         android:layout_marginStart="16dp"
         android:gravity="center"
         android:text="@string/TITLE"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bookList_image" />
+        app:layout_constraintTop_toBottomOf="@+id/adapter_books_image" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

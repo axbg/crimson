@@ -107,7 +107,7 @@ public class QuoteDetailFragment extends Fragment {
     }
 
     private void bindLayout() {
-        binding.quoteDetailCamera.setOnClickListener(v -> {
+        binding.fragmentQuoteDetailCamera.setOnClickListener(v -> {
             if (ContextCompat.checkSelfPermission(
                     requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                 takePictureFromCamera();
@@ -116,16 +116,16 @@ public class QuoteDetailFragment extends Fragment {
             }
         });
 
-        binding.quoteDetailGallery.setOnClickListener(v -> galleryPick.launch("image/*"));
+        binding.fragmentQuoteDetailGallery.setOnClickListener(v -> galleryPick.launch("image/*"));
 
         bindBookSelectListener();
 
-        binding.quoteDetailBookUpdate.setOnClickListener(v ->
+        binding.fragmentQuoteDetailBookUpdateButton.setOnClickListener(v ->
                 NavHostFragment.findNavController(this).navigate(
                         QuoteDetailFragmentDirections.selectBookAction()
                 ));
 
-        binding.quoteDetailAdd.setOnClickListener(v -> {
+        binding.fragmentQuoteDetailAddButton.setOnClickListener(v -> {
             QuoteEntity quote = getInputValues();
 
             if (quote != null) {
@@ -138,56 +138,56 @@ public class QuoteDetailFragment extends Fragment {
                     }
                 });
 
-                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
+                Navigation.findNavController(requireActivity(), R.id.activity_landing_nav_host_fragment)
                         .popBackStack();
             }
         });
     }
 
     private void bindViewLayout(long quoteId, String bookTitle) {
-        binding.quoteDetailAdded.setVisibility(View.VISIBLE);
-        binding.quoteDetailRemove.setVisibility(View.VISIBLE);
-        binding.quoteDetailRemove.setOnClickListener(v ->
+        binding.fragmentQuoteDetailAdded.setVisibility(View.VISIBLE);
+        binding.fragmentQuoteDetailRemoveButton.setVisibility(View.VISIBLE);
+        binding.fragmentQuoteDetailRemoveButton.setOnClickListener(v ->
                 new AlertDialog.Builder(requireContext())
                         .setTitle(R.string.REMOVE_QUOTE)
                         .setMessage(R.string.REMOVE_QUOTE_MESSAGE)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setPositiveButton(R.string.DIALOG_YES, (dialog, which) -> {
                             AsyncTask.execute(() -> quotesViewModel.getQuoteDao().delete(quoteId));
-                            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
+                            Navigation.findNavController(requireActivity(), R.id.activity_landing_nav_host_fragment)
                                     .popBackStack();
                         })
                         .setNegativeButton(R.string.DIALOG_NO, null)
                         .show());
 
-        binding.quoteDetailBook.setText(bookTitle);
+        binding.fragmentQuoteDetailBook.setText(bookTitle);
 
-        binding.quoteDetailText.setCursorVisible(false);
-        binding.quoteDetailText.setOnClickListener((view) ->
-                binding.quoteDetailText.setCursorVisible(true));
+        binding.fragmentQuoteDetailText.setCursorVisible(false);
+        binding.fragmentQuoteDetailText.setOnClickListener((view) ->
+                binding.fragmentQuoteDetailText.setCursorVisible(true));
 
         AsyncTask.execute(() -> {
             existingQuote = quotesViewModel.getQuoteDao().getById(quoteId);
 
             if (existingQuote != null) {
-                binding.quoteDetailText.setText(existingQuote.getText());
-                binding.quoteDetailAdded.setText(existingQuote.getAddedAt().toString());
+                binding.fragmentQuoteDetailText.setText(existingQuote.getText());
+                binding.fragmentQuoteDetailAdded.setText(existingQuote.getAddedAt().toString());
             }
         });
     }
 
     private QuoteEntity getInputValues() {
-        binding.quoteDetailText.setError(null);
+        binding.fragmentQuoteDetailText.setError(null);
 
-        String text = binding.quoteDetailText.getText().toString();
+        String text = binding.fragmentQuoteDetailText.getText().toString();
         if (text.isEmpty()) {
-            binding.quoteDetailText.setError(String.valueOf(R.string.ERROR_QUOTE_EMPTY));
+            binding.fragmentQuoteDetailText.setError(String.valueOf(R.string.ERROR_QUOTE_EMPTY));
             return null;
         }
 
-        binding.quoteDetailBook.setError(null);
+        binding.fragmentQuoteDetailBook.setError(null);
         if (bookId == 0 && existingQuote == null) {
-            binding.quoteDetailBook.setError(String.valueOf(R.string.ERROR_BOOK_EMPTY));
+            binding.fragmentQuoteDetailBook.setError(String.valueOf(R.string.ERROR_BOOK_EMPTY));
             return null;
         }
 
@@ -215,7 +215,7 @@ public class QuoteDetailFragment extends Fragment {
         MutableLiveData<String> bookTitleListener = navController.getCurrentBackStackEntry()
                 .getSavedStateHandle()
                 .getLiveData("BOOK_TITLE");
-        bookTitleListener.observe(getViewLifecycleOwner(), (bookTitle) -> binding.quoteDetailBook.setText(bookTitle));
+        bookTitleListener.observe(getViewLifecycleOwner(), (bookTitle) -> binding.fragmentQuoteDetailBook.setText(bookTitle));
     }
 
     /* Image processing */
@@ -262,9 +262,10 @@ public class QuoteDetailFragment extends Fragment {
 
             recognizer.process(quoteTempImage)
                     .addOnSuccessListener(text -> {
-                        binding.quoteDetailText.setText("");
+                        binding.fragmentQuoteDetailText.setText("");
                         String extractedText = text.getText();
-                        binding.quoteDetailText.setText(extractedText);
+                        binding.fragmentQuoteDetailText.setText(extractedText);
+                        binding.fragmentQuoteDetailText.setSelection(extractedText.length());
                     })
                     .addOnFailureListener(e -> Toast.makeText(requireContext(),
                             R.string.ERROR_NO_TEXT_DETECTED,

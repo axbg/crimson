@@ -85,8 +85,8 @@ public class CoverFragment extends Fragment {
     }
 
     private void bindSearchButton() {
-        TextInputEditText searchQueryInput = requireView().findViewById(R.id.cover_search_input_text);
-        Button searchButton = requireView().findViewById(R.id.cover_search_button);
+        TextInputEditText searchQueryInput = requireView().findViewById(R.id.fragment_cover_search_input_text);
+        Button searchButton = requireView().findViewById(R.id.fragment_cover_search_button);
         searchButton.setOnClickListener(v -> {
             String searchQuery = searchQueryInput.getText() != null ?
                     searchQueryInput.getText().toString() : "";
@@ -115,7 +115,7 @@ public class CoverFragment extends Fragment {
     }
 
     private void bindTakePhotoButton() {
-        FloatingActionButton addBookFab = requireView().findViewById(R.id.cover_camera_fab);
+        FloatingActionButton addBookFab = requireView().findViewById(R.id.fragment_cover_camera);
         addBookFab.setOnClickListener(v -> {
             if (ContextCompat.checkSelfPermission(
                     requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
@@ -130,10 +130,10 @@ public class CoverFragment extends Fragment {
         try {
             booksAdapter = new OpenLibraryBooksAdapter(books, R.layout.adapter_books, requireContext());
 
-            GridView booksGridView = requireView().findViewById(R.id.cover_grid_view);
+            GridView booksGridView = requireView().findViewById(R.id.fragment_cover_grid_view);
             booksGridView.setAdapter(booksAdapter);
             booksGridView.setOnItemClickListener((parent, view, position, id) -> {
-                NavController nav = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+                NavController nav = Navigation.findNavController(requireActivity(), R.id.activity_landing_nav_host_fragment);
                 Objects.requireNonNull(nav.getPreviousBackStackEntry()).
                         getSavedStateHandle().set("OPEN_BOOK", books.get(position));
                 nav.popBackStack();
@@ -209,7 +209,7 @@ public class CoverFragment extends Fragment {
                 coverPath = result.getUri().getPath();
             }
 
-            NavController nav = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+            NavController nav = Navigation.findNavController(requireActivity(), R.id.activity_landing_nav_host_fragment);
             Objects.requireNonNull(nav.getPreviousBackStackEntry()).
                     getSavedStateHandle().set("CUSTOM_COVER", coverPath);
             nav.popBackStack();

@@ -83,12 +83,12 @@ public class BookDetailFragment extends Fragment {
     }
 
     private void bindLayout() {
-        binding.bookDetailAdd.setOnClickListener(v -> {
+        binding.fragmentBookDetailAddButton.setOnClickListener(v -> {
             BookEntity book = getInputValues();
             if (book != null) {
                 AsyncTask.execute(() -> {
                     try {
-                        BitmapDrawable coverBitmap = (BitmapDrawable) binding.bookDetailCover.getDrawable();
+                        BitmapDrawable coverBitmap = (BitmapDrawable) binding.fragmentBookDetailCover.getDrawable();
                         downloadCover(book, coverBitmap.getBitmap());
                     } catch (IOException ignored) {
                     }
@@ -100,14 +100,14 @@ public class BookDetailFragment extends Fragment {
                         booksViewModel.getBookDao().update(existingBook);
                     }
 
-                    Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
+                    Navigation.findNavController(requireActivity(), R.id.activity_landing_nav_host_fragment)
                             .navigate(R.id.navigation_books);
                 });
             }
         });
 
-        binding.bookDetailCover.setOnClickListener(v -> {
-            NavController nav = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+        binding.fragmentBookDetailCover.setOnClickListener(v -> {
+            NavController nav = Navigation.findNavController(requireActivity(), R.id.activity_landing_nav_host_fragment);
             nav.navigate(BookDetailFragmentDirections.addCoverAction());
         });
 
@@ -115,16 +115,16 @@ public class BookDetailFragment extends Fragment {
     }
 
     private void buildViewLayout(long bookId) {
-        binding.bookDetailQuotes.setVisibility(View.VISIBLE);
-        binding.bookDetailRemove.setVisibility(View.VISIBLE);
-        binding.bookDetailRemove.setOnClickListener(v ->
+        binding.fragmentBookDetailQuotes.setVisibility(View.VISIBLE);
+        binding.fragmentBookDetailRemoveButton.setVisibility(View.VISIBLE);
+        binding.fragmentBookDetailRemoveButton.setOnClickListener(v ->
                 new AlertDialog.Builder(requireContext())
                         .setTitle(R.string.REMOVE_BOOK)
                         .setMessage(R.string.REMOVE_BOOK_MESSAGE)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setPositiveButton(R.string.DIALOG_YES, (dialog, which) -> {
                             AsyncTask.execute(() -> booksViewModel.getBookDao().delete(bookId));
-                            NavController nav = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+                            NavController nav = Navigation.findNavController(requireActivity(), R.id.activity_landing_nav_host_fragment);
                             nav.popBackStack();
                         })
                         .setNegativeButton(R.string.DIALOG_NO, null)
@@ -134,10 +134,10 @@ public class BookDetailFragment extends Fragment {
         existingBook = bookEntity;
 
         if (bookEntity != null) {
-            binding.bookDetailCover.setImageBitmap(loadCover(bookEntity.getCoverPath()));
-            binding.bookDetailTitleText.setText(bookEntity.getTitle());
-            binding.bookDetailAuthorText.setText(bookEntity.getAuthor());
-            binding.bookDetailFinished.setChecked(bookEntity.isFinished());
+            binding.fragmentBookDetailCover.setImageBitmap(loadCover(bookEntity.getCoverPath()));
+            binding.fragmentBookDetailTitleText.setText(bookEntity.getTitle());
+            binding.fragmentBookDetailAuthorText.setText(bookEntity.getAuthor());
+            binding.fragmentBookDetailFinished.setChecked(bookEntity.isFinished());
 
             booksViewModel.getBookDao().getQuotesByBookId(bookId).observe(getViewLifecycleOwner(),
                     this::refreshQuotesAdapter);
@@ -149,15 +149,15 @@ public class BookDetailFragment extends Fragment {
     private void bindQuotesAdapter(List<QuoteEntity> quotes, String bookTitle) {
         quotesAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, quotes);
 
-        binding.bookDetailQuotes.setAdapter(quotesAdapter);
-        binding.bookDetailQuotes.setOnItemClickListener(((parent, view, position, id) -> {
+        binding.fragmentBookDetailQuotes.setAdapter(quotesAdapter);
+        binding.fragmentBookDetailQuotes.setOnItemClickListener(((parent, view, position, id) -> {
             BookDetailFragmentDirections.ViewBookQuoteAction action = BookDetailFragmentDirections.viewBookQuoteAction();
 
             action.setCreate(false);
             action.setQuoteId(quotes.get(position).getId());
             action.setBookTitle(bookTitle);
 
-            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
+            Navigation.findNavController(requireActivity(), R.id.activity_landing_nav_host_fragment).navigate(action);
         }));
     }
 
@@ -180,10 +180,10 @@ public class BookDetailFragment extends Fragment {
                 .getSavedStateHandle()
                 .getLiveData("OPEN_BOOK");
         openBookData.observe(getViewLifecycleOwner(), (book) -> {
-            binding.bookDetailTitleText.setText(book.getTitle());
-            binding.bookDetailAuthorText.setText(book.getAuthor());
+            binding.fragmentBookDetailTitleText.setText(book.getTitle());
+            binding.fragmentBookDetailAuthorText.setText(book.getAuthor());
             imageUrl = book.getEditionKey();
-            Picasso.get().load(NetworkUtil.buildCoverUrl(imageUrl)).into(binding.bookDetailCover);
+            Picasso.get().load(NetworkUtil.buildCoverUrl(imageUrl)).into(binding.fragmentBookDetailCover);
         });
 
         MutableLiveData<String> customCover = Objects.requireNonNull(navController.getCurrentBackStackEntry())
@@ -191,7 +191,7 @@ public class BookDetailFragment extends Fragment {
                 .getLiveData("CUSTOM_COVER");
         customCover.observe(getViewLifecycleOwner(), (coverPath) -> {
             createdCustomCover = true;
-            binding.bookDetailCover.setImageBitmap(loadCover(coverPath));
+            binding.fragmentBookDetailCover.setImageBitmap(loadCover(coverPath));
             removeFromCache(coverPath);
         });
     }
@@ -219,28 +219,28 @@ public class BookDetailFragment extends Fragment {
     }
 
     private BookEntity getInputValues() {
-        binding.bookDetailTitleText.setError(null);
-        binding.bookDetailAuthorText.setError(null);
+        binding.fragmentBookDetailTitleText.setError(null);
+        binding.fragmentBookDetailAuthorText.setError(null);
 
         if (((imageUrl == null || imageUrl.isEmpty()) && existingBook == null) && !createdCustomCover) {
             Toast.makeText(requireContext(), String.valueOf(R.string.ERROR_COVER_IMAGE_EMPTY), Toast.LENGTH_SHORT).show();
             return null;
         }
 
-        String title = Objects.requireNonNull(binding.bookDetailTitleText.getText()).toString();
+        String title = Objects.requireNonNull(binding.fragmentBookDetailTitleText.getText()).toString();
         if (title.isEmpty()) {
-            binding.bookDetailTitleText.setError(String.valueOf(R.string.ERROR_TITLE_EMPTY));
+            binding.fragmentBookDetailTitleText.setError(String.valueOf(R.string.ERROR_TITLE_EMPTY));
             return null;
         }
 
-        String author = Objects.requireNonNull(binding.bookDetailAuthorText.getText()).toString();
+        String author = Objects.requireNonNull(binding.fragmentBookDetailAuthorText.getText()).toString();
         if (author.isEmpty()) {
-            binding.bookDetailAuthorText.setError(String.valueOf(R.string.ERROR_AUTHOR_EMPTY));
+            binding.fragmentBookDetailAuthorText.setError(String.valueOf(R.string.ERROR_AUTHOR_EMPTY));
             return null;
         }
 
         BookEntity bookEntity = new BookEntity(title, author, LocalDate.now(), "");
-        bookEntity.setFinished(binding.bookDetailFinished.isChecked());
+        bookEntity.setFinished(binding.fragmentBookDetailFinished.isChecked());
         return bookEntity;
     }
 

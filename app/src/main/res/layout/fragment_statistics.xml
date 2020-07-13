@@ -7,7 +7,7 @@
     tools:context=".ui.statistics.StatisticsFragment">
 
     <TextView
-        android:id="@+id/statistics_title"
+        android:id="@+id/fragment_statistics_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.mikhaellopez.circularimageview.CircularImageView
-        android:id="@+id/statistics_profile_picture"
+        android:id="@+id/fragment_statistics_profile_picture"
         android:layout_width="158dp"
         android:layout_height="151dp"
         android:layout_marginTop="76dp"
@@ -32,10 +32,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/statistics_title" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_title" />
 
     <TextView
-        android:id="@+id/statistics_quotes_no_label"
+        android:id="@+id/fragment_statistics_quotes_no_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
@@ -43,10 +43,10 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/statistics_profile_picture" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_profile_picture" />
 
     <TextView
-        android:id="@+id/statistics_quotes_no"
+        android:id="@+id/fragment_statistics_quotes_no"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/NUMBER_PLACEHOLDER"
@@ -54,10 +54,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/statistics_quotes_no_label" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_quotes_no_label" />
 
     <TextView
-        android:id="@+id/statistics_books_no_label"
+        android:id="@+id/fragment_statistics_books_no_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="68dp"
@@ -65,10 +65,10 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/statistics_quotes_no" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_quotes_no" />
 
     <TextView
-        android:id="@+id/statistics_books_no"
+        android:id="@+id/fragment_statistics_books_no"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/NUMBER_PLACEHOLDER"
@@ -76,10 +76,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/statistics_books_no_label" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_books_no_label" />
 
     <TextView
-        android:id="@+id/statistics_quotes_rate_label"
+        android:id="@+id/fragment_statistics_quotes_rate_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="68dp"
@@ -87,16 +87,16 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/statistics_books_no" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_books_no" />
 
     <TextView
-        android:id="@+id/statistics_quotes_rate"
+        android:id="@+id/fragment_statistics_quotes_rate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/NUMBER_PLACEHOLDER"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/statistics_quotes_rate_label" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_quotes_rate_label" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

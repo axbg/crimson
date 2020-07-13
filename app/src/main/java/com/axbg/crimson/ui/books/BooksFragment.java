@@ -48,9 +48,9 @@ public class BooksFragment extends androidx.fragment.app.Fragment {
     }
 
     private void bindAddBookButton() {
-        FloatingActionButton addBookFab = requireView().findViewById(R.id.add_book_fab);
+        FloatingActionButton addBookFab = requireView().findViewById(R.id.fragment_books_add);
         addBookFab.setOnClickListener(v -> {
-            NavController nav = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+            NavController nav = Navigation.findNavController(requireActivity(), R.id.activity_landing_nav_host_fragment);
             nav.navigate(BooksFragmentDirections.createBookAction());
         });
     }
@@ -59,10 +59,10 @@ public class BooksFragment extends androidx.fragment.app.Fragment {
         try {
             booksAdapter = new BooksAdapter(books, R.layout.adapter_books, requireContext());
 
-            GridView booksGridView = requireView().findViewById(R.id.books_grid_view);
+            GridView booksGridView = requireView().findViewById(R.id.fragment_books_grid_view);
 
             booksGridView.setOnItemClickListener((parent, view, position, id) -> {
-                NavController nav = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+                NavController nav = Navigation.findNavController(requireActivity(), R.id.activity_landing_nav_host_fragment);
 
                 BooksFragmentDirections.CreateBookAction action = BooksFragmentDirections.createBookAction();
                 action.setBookId(books.get(position).getId());

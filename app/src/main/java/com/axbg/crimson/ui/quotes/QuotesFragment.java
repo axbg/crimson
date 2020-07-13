@@ -56,7 +56,7 @@ public class QuotesFragment extends Fragment {
         try {
             quotesAdapter = new QuotesAdapter(quotes, R.layout.adapter_quotes, requireContext());
 
-            ListView quotesListView = requireView().findViewById(R.id.quotes_listview);
+            ListView quotesListView = requireView().findViewById(R.id.fragment_quotes_list_view);
             quotesListView.setAdapter(quotesAdapter);
             quotesListView.setOnItemClickListener(((parent, view, position, id) -> {
                 String bookTitle = quotes.get(position).getBook() != null ?
@@ -69,7 +69,7 @@ public class QuotesFragment extends Fragment {
     }
 
     private void bindAddQuoteFab() {
-        FloatingActionButton addQuoteFab = requireView().findViewById(R.id.quotes_add_fab);
+        FloatingActionButton addQuoteFab = requireView().findViewById(R.id.fragment_quotes_add);
         addQuoteFab.setOnClickListener(v ->
                 launchCreateQuoteAction(true, 0, ""));
     }
@@ -87,7 +87,7 @@ public class QuotesFragment extends Fragment {
     }
 
     private void launchCreateQuoteAction(boolean create, long quoteId, String bookTitle) {
-        NavController nav = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+        NavController nav = Navigation.findNavController(requireActivity(), R.id.activity_landing_nav_host_fragment);
 
         QuotesFragmentDirections.CreateQuoteAction action = QuotesFragmentDirections.createQuoteAction();
         action.setCreate(create);

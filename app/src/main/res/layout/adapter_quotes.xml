@@ -6,7 +6,7 @@
     android:background="?android:selectableItemBackground">
 
     <TextView
-        android:id="@+id/quoteList_quote"
+        android:id="@+id/adapter_quotes_text"
         android:layout_width="366dp"
         android:layout_height="91dp"
         android:layout_marginTop="16dp"
@@ -19,17 +19,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/quoteList_date"
+        android:id="@+id/adapter_quotes_added"
         android:layout_width="130dp"
         android:layout_height="25dp"
         android:layout_marginStart="22dp"
         android:layout_marginTop="8dp"
         android:text="@string/DATE_PLACEHOLDER"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/quoteList_quote" />
+        app:layout_constraintTop_toBottomOf="@+id/adapter_quotes_text" />
 
     <TextView
-        android:id="@+id/quoteList_book"
+        android:id="@+id/adapter_quotes_book"
         android:layout_width="217dp"
         android:layout_height="25dp"
         android:layout_marginTop="8dp"
@@ -37,6 +37,6 @@
         android:gravity="center"
         android:text="@string/BOOK"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/quoteList_quote" />
+        app:layout_constraintTop_toBottomOf="@+id/adapter_quotes_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
