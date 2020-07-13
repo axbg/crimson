@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -23,15 +22,18 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
 import com.axbg.crimson.BuildConfig;
 import com.axbg.crimson.R;
+import com.axbg.crimson.databinding.FragmentCoverBinding;
 import com.axbg.crimson.network.NetworkUtil;
 import com.axbg.crimson.network.VolleyManager;
 import com.axbg.crimson.network.object.OpenLibraryBook;
-import com.axbg.crimson.ui.books.adapter.OpenLibraryBooksAdapter;
+import com.axbg.crimson.ui.books.adapter.OpenBookRecyclerViewAdapter;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -49,8 +51,11 @@ import static android.app.Activity.RESULT_OK;
 public class CoverFragment extends Fragment {
     private Uri cameraPicture;
     private ShimmerRecyclerView shimmerLayout;
-    private OpenLibraryBooksAdapter booksAdapter;
+    private FragmentCoverBinding binding;
+    private OpenBookRecyclerViewAdapter booksAdapter;
 
+    private int currentPage = 1;
+    private boolean moreAvailable = true;
     private List<OpenLibraryBook> books = new ArrayList<>();
 
     private ActivityResultLauncher<Uri> takePicture = registerForActivityResult(new ActivityResultContracts.TakePicture(),
@@ -72,7 +77,8 @@ public class CoverFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_cover, container, false);
+        binding = FragmentCoverBinding.inflate(getLayoutInflater());
+        return binding.getRoot();
     }
 
     @Override
@@ -81,37 +87,54 @@ public class CoverFragment extends Fragment {
         bindSearchButton();
         bindTakePhotoButton();
         bindShimmer();
-        bindGridView(books);
+        bindRecyclerView();
     }
 
     private void bindSearchButton() {
-        TextInputEditText searchQueryInput = requireView().findViewById(R.id.fragment_cover_search_input_text);
         Button searchButton = requireView().findViewById(R.id.fragment_cover_search_button);
         searchButton.setOnClickListener(v -> {
-            String searchQuery = searchQueryInput.getText() != null ?
-                    searchQueryInput.getText().toString() : "";
-
-            if (!searchQuery.isEmpty()) {
-                StringRequest request = new StringRequest(Request.Method.GET, NetworkUtil.buildSearchUrl(searchQuery),
-                        response -> {
-                            refreshBooksAdapter(OpenLibraryBook.fromJson(response));
-                            hideShimmer();
-                        },
-                        error -> {
-                            hideShimmer();
-                            Toast.makeText(requireContext(), R.string.ERROR_CONNECTION,
-                                    Toast.LENGTH_SHORT).show();
-                        });
-
-                hideKeyboard();
-                showShimmer();
-                refreshBooksAdapter(null);
-                VolleyManager.getInstance(requireContext()).addToQueue(request);
-            } else {
-                Toast.makeText(requireContext(), R.string.ERROR_QUERY_EMPTY, Toast.LENGTH_SHORT)
-                        .show();
-            }
+            currentPage = 1;
+            searchOpenLibrary(true);
         });
+    }
+
+    private void searchOpenLibrary(boolean clear) {
+        TextInputEditText searchQueryInput = requireView().findViewById(R.id.fragment_cover_search_input_text);
+        String searchQuery = searchQueryInput.getText() != null ?
+                searchQueryInput.getText().toString() : "";
+
+        if (!searchQuery.isEmpty()) {
+            StringRequest request = new StringRequest(Request.Method.GET, NetworkUtil.buildSearchUrl(searchQuery, currentPage),
+                    response -> {
+                        List<OpenLibraryBook> newBooks = OpenLibraryBook.fromJson(response);
+                        refreshBooksAdapter(newBooks, clear);
+
+                        if (clear) {
+                            hideShimmer();
+                        }
+
+                        if (newBooks.size() > 0) {
+                            moreAvailable = true;
+                        }
+                    },
+                    error -> {
+                        hideShimmer();
+                        Toast.makeText(requireContext(), R.string.ERROR_CONNECTION,
+                                Toast.LENGTH_SHORT).show();
+                    });
+
+            hideKeyboard();
+
+            if (clear) {
+                showShimmer();
+                refreshBooksAdapter(null, true);
+            }
+
+            VolleyManager.getInstance(requireContext()).addToQueue(request);
+        } else {
+            Toast.makeText(requireContext(), R.string.ERROR_QUERY_EMPTY, Toast.LENGTH_SHORT)
+                    .show();
+        }
     }
 
     private void bindTakePhotoButton() {
@@ -126,20 +149,33 @@ public class CoverFragment extends Fragment {
         });
     }
 
-    private void bindGridView(List<OpenLibraryBook> books) {
-        try {
-            booksAdapter = new OpenLibraryBooksAdapter(books, R.layout.adapter_books, requireContext());
+    private void bindRecyclerView() {
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(requireContext(), 3);
 
-            GridView booksGridView = requireView().findViewById(R.id.fragment_cover_grid_view);
-            booksGridView.setAdapter(booksAdapter);
-            booksGridView.setOnItemClickListener((parent, view, position, id) -> {
-                NavController nav = Navigation.findNavController(requireActivity(), R.id.activity_landing_nav_host_fragment);
-                Objects.requireNonNull(nav.getPreviousBackStackEntry()).
-                        getSavedStateHandle().set("OPEN_BOOK", books.get(position));
-                nav.popBackStack();
-            });
-        } catch (Exception ignored) {
-        }
+        RecyclerView recyclerView = binding.fragmentCoverRecyclerView;
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) {
+                    int pastVisible = gridLayoutManager.findFirstVisibleItemPosition();
+                    int visible = gridLayoutManager.getChildCount();
+                    int total = gridLayoutManager.getItemCount();
+
+                    if (moreAvailable && computeScrollingLoadRatio(pastVisible, visible, total)) {
+                        moreAvailable = false;
+                        currentPage++;
+                        searchOpenLibrary(false);
+                    }
+                }
+            }
+        });
+
+        booksAdapter = new OpenBookRecyclerViewAdapter(books,
+                Navigation.findNavController(requireActivity(), R.id.activity_landing_nav_host_fragment));
+
+        recyclerView.setAdapter(booksAdapter);
     }
 
     private void bindShimmer() {
@@ -162,9 +198,11 @@ public class CoverFragment extends Fragment {
         }
     }
 
-    private void refreshBooksAdapter(List<OpenLibraryBook> newBooks) {
+    private void refreshBooksAdapter(List<OpenLibraryBook> newBooks, boolean clear) {
         if (books != null && booksAdapter != null) {
-            books.clear();
+            if (clear) {
+                books.clear();
+            }
 
             if (newBooks != null) {
                 books.addAll(newBooks);
@@ -172,6 +210,10 @@ public class CoverFragment extends Fragment {
 
             booksAdapter.notifyDataSetChanged();
         }
+    }
+
+    private boolean computeScrollingLoadRatio(int pastVisible, int visible, int total) {
+        return (visible + pastVisible) >= 2 * (total / 3);
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")

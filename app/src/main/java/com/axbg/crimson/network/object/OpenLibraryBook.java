@@ -44,17 +44,19 @@ public class OpenLibraryBook implements Serializable {
         try {
             title = jsonObject.getString("title_suggest");
             authorArray = jsonObject.getJSONArray("author_name");
+            JSONArray editions = jsonObject.getJSONArray("edition_key");
 
             if (authorArray.length() > 0) {
                 author = authorArray.getString(0);
             }
 
-            JSONArray editions = jsonObject.getJSONArray("edition_key");
             for (int i = 0; i < editions.length(); i++) {
-                bookEditions.add(new OpenLibraryBook(title, author, editions.getString(i)));
+                String edition = editions.getString(i);
+                if (edition != null && !edition.isEmpty()) {
+                    bookEditions.add(new OpenLibraryBook(title, author, edition));
+                }
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
+        } catch (JSONException ignored) {
         }
 
         return bookEditions;

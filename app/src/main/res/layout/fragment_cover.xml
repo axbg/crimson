@@ -26,8 +26,8 @@
         app:shimmer_demo_layout="@layout/shimmer_adapter_books"
         app:shimmer_demo_layout_manager_type="grid" />
 
-    <GridView
-        android:id="@+id/fragment_cover_grid_view"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_cover_recycler_view"
         android:layout_width="384dp"
         android:layout_height="609dp"
         android:layout_marginTop="20dp"
@@ -51,7 +51,7 @@
         android:clickable="true"
         android:src="@android:drawable/ic_menu_camera"
         app:backgroundTint="@color/primaryPurple"
-        app:layout_constraintBottom_toBottomOf="@id/fragment_cover_grid_view"
+        app:layout_constraintBottom_toBottomOf="@id/fragment_cover_recycler_view"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
