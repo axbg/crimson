@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.axbg.crimson.R;
 import com.axbg.crimson.databinding.FragmentStatisticsBinding;
 import com.axbg.crimson.ui.books.BooksViewModel;
 import com.axbg.crimson.ui.quotes.QuotesViewModel;
@@ -40,8 +41,8 @@ public class StatisticsFragment extends Fragment {
     }
 
     private void bindProfilePictureClick() {
-        binding.statisticsProfilePicture.setOnClickListener(v -> Toast.makeText(requireContext(),
-                "You're awesome!", Toast.LENGTH_SHORT).show());
+        binding.statisticsProfilePicture.setOnClickListener(v ->
+                Toast.makeText(requireContext(), R.string.YOU_AWESOME_EASTER_EGG, Toast.LENGTH_SHORT).show());
     }
 
     private void bindStatistics() {

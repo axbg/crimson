@@ -16,7 +16,7 @@
         android:layout_marginTop="24dp"
         android:adjustViewBounds="true"
         android:background="@color/shimmerGray"
-        android:contentDescription="@string/BOOK_COVER_ALT"
+        android:contentDescription="@string/BOOK"
         android:scaleType="fitCenter"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -27,7 +27,7 @@
         android:layout_height="42dp"
         android:layout_marginStart="16dp"
         android:gravity="center"
-        android:text="@string/TITLE_PLACEHOLDER"
+        android:text="@string/TITLE"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bookList_image" />
 

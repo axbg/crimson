@@ -11,7 +11,7 @@
         android:layout_height="91dp"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:text="@string/TEXT_PLACEHOLDER"
+        android:text="@string/QUOTE"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.488"
@@ -35,7 +35,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="20dp"
         android:gravity="center"
-        android:text="@string/TEXT_PLACEHOLDER"
+        android:text="@string/BOOK"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/quoteList_quote" />
 

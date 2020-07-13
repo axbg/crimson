@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/navigation_quotes"
         android:name="com.axbg.crimson.ui.quotes.QuotesFragment"
-        android:label="@string/TITLE_QUOTES"
+        android:label="@string/QUOTES"
         tools:layout="@layout/fragment_quotes">
         <action
             android:id="@+id/create_quote_action"
@@ -18,7 +18,7 @@
     <fragment
         android:id="@+id/navigation_books"
         android:name="com.axbg.crimson.ui.books.BooksFragment"
-        android:label="@string/TITLE_BOOKS"
+        android:label="@string/BOOKS"
         tools:layout="@layout/fragment_books">
         <action
             android:id="@+id/create_book_action"
@@ -28,7 +28,7 @@
     <fragment
         android:id="@+id/navigation_statistics"
         android:name="com.axbg.crimson.ui.statistics.StatisticsFragment"
-        android:label="@string/TITLE_STATISTICS"
+        android:label="@string/STATISTICS"
         tools:layout="@layout/fragment_statistics" />
 
     <fragment

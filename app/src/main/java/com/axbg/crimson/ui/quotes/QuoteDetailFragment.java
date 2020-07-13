@@ -69,7 +69,7 @@ public class QuoteDetailFragment extends Fragment {
                 if (isGranted) {
                     takePictureFromCamera();
                 } else {
-                    Toast.makeText(requireContext(), "Camera permission is required", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), R.string.CAMERA_PERMISSION_MESSAGE, Toast.LENGTH_SHORT)
                             .show();
                 }
             });
@@ -149,8 +149,8 @@ public class QuoteDetailFragment extends Fragment {
         binding.quoteDetailRemove.setVisibility(View.VISIBLE);
         binding.quoteDetailRemove.setOnClickListener(v ->
                 new AlertDialog.Builder(requireContext())
-                        .setTitle("Removing quote")
-                        .setMessage("Are you sure you want to remove this quote?")
+                        .setTitle(R.string.REMOVE_QUOTE)
+                        .setMessage(R.string.REMOVE_QUOTE_MESSAGE)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setPositiveButton(R.string.DIALOG_YES, (dialog, which) -> {
                             AsyncTask.execute(() -> quotesViewModel.getQuoteDao().delete(quoteId));
@@ -181,13 +181,13 @@ public class QuoteDetailFragment extends Fragment {
 
         String text = binding.quoteDetailText.getText().toString();
         if (text.isEmpty()) {
-            binding.quoteDetailText.setError("Quote text cannot be empty");
+            binding.quoteDetailText.setError(String.valueOf(R.string.ERROR_QUOTE_EMPTY));
             return null;
         }
 
         binding.quoteDetailBook.setError(null);
         if (bookId == 0 && existingQuote == null) {
-            binding.quoteDetailBook.setError("You should select a book first");
+            binding.quoteDetailBook.setError(String.valueOf(R.string.ERROR_BOOK_EMPTY));
             return null;
         }
 
@@ -267,10 +267,10 @@ public class QuoteDetailFragment extends Fragment {
                         binding.quoteDetailText.setText(extractedText);
                     })
                     .addOnFailureListener(e -> Toast.makeText(requireContext(),
-                            "Failure on text detection. Please retry!",
+                            R.string.ERROR_NO_TEXT_DETECTED,
                             Toast.LENGTH_SHORT).show());
         } catch (IOException ignored) {
-            Toast.makeText(requireContext(), "Error on photo processing", Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), R.string.ERROR_PHOTO_PROCESSING, Toast.LENGTH_SHORT)
                     .show();
         }
     }

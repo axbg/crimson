@@ -65,7 +65,7 @@ public class CoverFragment extends Fragment {
                 if (isGranted) {
                     takePictureFromCamera();
                 } else {
-                    Toast.makeText(requireContext(), "Camera permission is required", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), R.string.CAMERA_PERMISSION_MESSAGE, Toast.LENGTH_SHORT)
                             .show();
                 }
             });
@@ -99,7 +99,7 @@ public class CoverFragment extends Fragment {
                         },
                         error -> {
                             hideShimmer();
-                            Toast.makeText(requireContext(), "Error during connection",
+                            Toast.makeText(requireContext(), R.string.ERROR_CONNECTION,
                                     Toast.LENGTH_SHORT).show();
                         });
 
@@ -108,7 +108,7 @@ public class CoverFragment extends Fragment {
                 refreshBooksAdapter(null);
                 VolleyManager.getInstance(requireContext()).addToQueue(request);
             } else {
-                Toast.makeText(requireContext(), "Query text cannot be empty", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(), R.string.ERROR_QUERY_EMPTY, Toast.LENGTH_SHORT)
                         .show();
             }
         });
@@ -183,8 +183,8 @@ public class CoverFragment extends Fragment {
                 tempPicture.createNewFile();
             }
 
-            Uri uri = FileProvider.getUriForFile(requireActivity(), BuildConfig.APPLICATION_ID.concat(".provider"),
-                    tempPicture);
+            Uri uri = FileProvider.getUriForFile(requireActivity(),
+                    BuildConfig.APPLICATION_ID.concat(".provider"), tempPicture);
 
             cameraPicture = uri;
             takePicture.launch(uri);

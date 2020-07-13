@@ -67,7 +67,7 @@
             android:id="@+id/cover_search_input_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/COVER_SEARCH"
+            android:hint="@string/SEARCH_COVER"
             android:textSize="16sp" />
     </com.google.android.material.textfield.TextInputLayout>
 

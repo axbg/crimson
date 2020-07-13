@@ -1,35 +1,49 @@
 <resources>
-    <string name="app_name">crimson</string>
-    <string name="TITLE_ACTIVITY_LANDING">crimson - home</string>
-    <string name="TITLE_QUOTES">Quotes</string>
-    <string name="TITLE_BOOKS">Books</string>
-    <string name="TITLE_STATISTICS">Statistics</string>
-    <string name="TEXT_PLACEHOLDER">Text Placeholder</string>
-    <string name="DATE_PLACEHOLDER">DD/MM/YYYY</string>
-    <string name="QUOTES_TITLE">Favorite Quotes</string>
-    <string name="BOOKS_TITLE">Favorite Books</string>
-    <string name="BOOK_COVER_ALT">Book Cover</string>
-    <string name="STATISTICS_TITLE">Statistics</string>
-    <string name="STATISTICS_QUOTES_NO">Quotes</string>
-    <string name="STATISTICS_BOOKS_NO">Books</string>
-    <string name="QUOTES_RATE_NO">Quotes/Book</string>
-    <string name="STATISTICS_QUOTES_RATE_NO">Quotes / Book</string>
-    <string name="NUMBER_PLACEHOLDER">0</string>
-    <string name="TITLE_PLACEHOLDER">Title</string>
-    <string name="DETAIL_BOOK_TITLE">Title</string>
-    <string name="DETAIL_BOOK_AUTHOR">Author</string>
-    <string name="DETAIL_BOOK_FINISHED">Finished?</string>
-    <string name="DETAIL_BOOK_SAVE">Save</string>
-    <string name="DETAIL_BOOK_REMOVE">Remove</string>
-    <string name="COVER_SEARCH">Search for a cover</string>
-    <string name="SEARCH">Search</string>
-    <string name="DETAIL_BOOK_TEXT">Write down a quote that inspired you or extract it using your cam</string>
-    <string name="QUOTE_DETAIL_TEXT">Quote detail</string>
-    <string name="DETAIL_QUOTE_BOOK_UPDATE">Update</string>
-    <string name="DETAIL_QUOTE_ADDED_AT">Added at</string>
-    <string name="DETAIL_QUOTE_ADD">Add</string>
-    <string name="DETAIL_QUOTE_REMOVE">Remove</string>
-    <string name="DETAIL_QUOTE_BOOK">Book</string>
-    <string name="DIALOG_YES">Yes</string>
     <string name="DIALOG_NO">No</string>
+    <string name="DIALOG_YES">Yes</string>
+    <string name="NUMBER_PLACEHOLDER">0</string>
+    <string name="DATE_PLACEHOLDER">DD/MM/YYYY</string>
+
+    <string name="APP_NAME">crimson</string>
+
+    <string name="QUOTE">Quote</string>
+    <string name="QUOTES">Quotes</string>
+    <string name="FAVORITE_QUOTES">Favorite Quotes</string>
+    <string name="QUOTES_PER_BOOK">Quotes / Book</string>
+    <string name="REMOVE_QUOTE">Removing Quote</string>
+
+    <string name="BOOK">Book</string>
+    <string name="BOOKS">Books</string>
+    <string name="FAVORITE_BOOKS">Favorite Books</string>
+    <string name="REMOVE_BOOK">Removing Book</string>
+
+    <string name="STATISTICS">Statistics</string>
+
+    <string name="TITLE">Title</string>
+    <string name="AUTHOR">Author</string>
+    <string name="FINISHED">Finished?</string>
+    <string name="SAVE">Save</string>
+    <string name="REMOVE">Remove</string>
+    <string name="SEARCH">Search</string>
+    <string name="SEARCH_COVER">Search for a cover</string>
+    <string name="ADDED_AT">Added at</string>
+    <string name="SELECT">Update</string>
+
+    <string name="INSERT_QUOTE_MESSAGE">Write down a quote that inspired you or capture it using your camera</string>
+    <string name="REMOVE_BOOK_MESSAGE">Are you sure you want to remove this book?
+        Its quotes will also be removed</string>
+    <string name="REMOVE_QUOTE_MESSAGE">Are you sure you want to remove this quote?</string>
+    <string name="CAMERA_PERMISSION_MESSAGE">Camera permission is required</string>
+    <string name="YOU_AWESOME_EASTER_EGG">You\'re awesome!</string>
+
+    <string name="ERROR_TITLE_EMPTY">Title cannot be empty</string>
+    <string name="ERROR_AUTHOR_EMPTY">Cover image cannot be empty</string>
+    <string name="ERROR_COVER_IMAGE_EMPTY">Author cannot be empty</string>
+    <string name="ERROR_QUERY_EMPTY">Search query cannot be empty</string>
+    <string name="ERROR_CONNECTION">Error occurred during connection</string>
+    <string name="ERROR_QUOTE_EMPTY">Quote text cannot be empty</string>
+    <string name="ERROR_BOOK_EMPTY">You should select a book first!</string>
+    <string name="ERROR_NO_TEXT_DETECTED">No text detected - Please try again</string>
+    <string name="ERROR_PHOTO_PROCESSING">Error occurred during photo processing</string>
+
 </resources>

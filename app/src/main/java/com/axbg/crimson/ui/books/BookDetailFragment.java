@@ -119,9 +119,8 @@ public class BookDetailFragment extends Fragment {
         binding.bookDetailRemove.setVisibility(View.VISIBLE);
         binding.bookDetailRemove.setOnClickListener(v ->
                 new AlertDialog.Builder(requireContext())
-                        .setTitle("Removing book")
-                        .setMessage("Are you sure you want to remove this book?\n" +
-                                "Its quotes will also be removed")
+                        .setTitle(R.string.REMOVE_BOOK)
+                        .setMessage(R.string.REMOVE_BOOK_MESSAGE)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setPositiveButton(R.string.DIALOG_YES, (dialog, which) -> {
                             AsyncTask.execute(() -> booksViewModel.getBookDao().delete(bookId));
@@ -224,19 +223,19 @@ public class BookDetailFragment extends Fragment {
         binding.bookDetailAuthorText.setError(null);
 
         if (((imageUrl == null || imageUrl.isEmpty()) && existingBook == null) && !createdCustomCover) {
-            Toast.makeText(requireContext(), "Cover image cannot be empty", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), String.valueOf(R.string.ERROR_COVER_IMAGE_EMPTY), Toast.LENGTH_SHORT).show();
             return null;
         }
 
         String title = Objects.requireNonNull(binding.bookDetailTitleText.getText()).toString();
         if (title.isEmpty()) {
-            binding.bookDetailTitleText.setError("Title cannot be empty");
+            binding.bookDetailTitleText.setError(String.valueOf(R.string.ERROR_TITLE_EMPTY));
             return null;
         }
 
         String author = Objects.requireNonNull(binding.bookDetailAuthorText.getText()).toString();
         if (author.isEmpty()) {
-            binding.bookDetailAuthorText.setError("Author cannot be empty");
+            binding.bookDetailAuthorText.setError(String.valueOf(R.string.ERROR_AUTHOR_EMPTY));
             return null;
         }
 

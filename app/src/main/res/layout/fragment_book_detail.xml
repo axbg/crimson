@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:adjustViewBounds="true"
-        android:contentDescription="@string/BOOK_COVER_ALT"
+        android:contentDescription="@string/BOOK"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -35,7 +35,7 @@
             android:id="@+id/book_detail_title_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/DETAIL_BOOK_TITLE" />
+            android:hint="@string/TITLE" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -52,7 +52,7 @@
             android:id="@+id/book_detail_author_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/DETAIL_BOOK_AUTHOR" />
+            android:hint="@string/AUTHOR" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <CheckBox
@@ -60,7 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:text="@string/DETAIL_BOOK_FINISHED"
+        android:text="@string/FINISHED"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/book_detail_author" />
@@ -82,7 +82,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="88dp"
         android:layout_marginTop="24dp"
-        android:text="@string/DETAIL_BOOK_SAVE"
+        android:text="@string/SAVE"
         app:layout_constraintEnd_toStartOf="@+id/book_detail_remove"
         app:layout_constraintHorizontal_bias="0.31"
         app:layout_constraintStart_toStartOf="parent"
@@ -94,7 +94,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="88dp"
-        android:text="@string/DETAIL_BOOK_REMOVE"
+        android:text="@string/REMOVE"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/book_detail_quotes" />
