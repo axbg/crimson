@@ -1,7 +1,6 @@
 package com.axbg.crimson.ui.books;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -9,7 +8,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -33,6 +31,7 @@ import com.axbg.crimson.databinding.FragmentCoverBinding;
 import com.axbg.crimson.network.NetworkUtil;
 import com.axbg.crimson.network.VolleyManager;
 import com.axbg.crimson.network.object.OpenLibraryBook;
+import com.axbg.crimson.ui.UIHelper;
 import com.axbg.crimson.ui.books.adapter.OpenBookRecyclerViewAdapter;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -123,7 +122,7 @@ public class CoverFragment extends Fragment {
                                 Toast.LENGTH_SHORT).show();
                     });
 
-            hideKeyboard();
+            UIHelper.hideKeyboard(requireActivity(), requireView());
 
             if (clear) {
                 showShimmer();
@@ -189,13 +188,6 @@ public class CoverFragment extends Fragment {
 
     private void hideShimmer() {
         shimmerLayout.hideShimmerAdapter();
-    }
-
-    private void hideKeyboard() {
-        InputMethodManager inputManager = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (inputManager != null) {
-            inputManager.hideSoftInputFromWindow(requireView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        }
     }
 
     private void refreshBooksAdapter(List<OpenLibraryBook> newBooks, boolean clear) {

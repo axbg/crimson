@@ -15,6 +15,7 @@ import androidx.navigation.Navigation;
 
 import com.axbg.crimson.R;
 import com.axbg.crimson.db.entity.QuoteEntity;
+import com.axbg.crimson.ui.quotes.adapter.QuotesAdapter;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 

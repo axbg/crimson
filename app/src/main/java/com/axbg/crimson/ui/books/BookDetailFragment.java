@@ -27,6 +27,7 @@ import com.axbg.crimson.db.entity.BookEntity;
 import com.axbg.crimson.db.entity.QuoteEntity;
 import com.axbg.crimson.network.NetworkUtil;
 import com.axbg.crimson.network.object.OpenLibraryBook;
+import com.axbg.crimson.ui.UIHelper;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
@@ -83,6 +84,8 @@ public class BookDetailFragment extends Fragment {
     }
 
     private void bindLayout() {
+        binding.fragmentBookDetailTitleText.setOnFocusChangeListener(UIHelper.getOutOfFocusListener(requireActivity(), requireView()));
+        binding.fragmentBookDetailAuthorText.setOnFocusChangeListener(UIHelper.getOutOfFocusListener(requireActivity(), requireView()));
         binding.fragmentBookDetailAddButton.setOnClickListener(v -> {
             BookEntity book = getInputValues();
             if (book != null) {

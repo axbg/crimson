@@ -1,4 +1,4 @@
-package com.axbg.crimson.ui.quotes;
+package com.axbg.crimson.ui.quotes.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -20,7 +20,7 @@ public class QuotesAdapter extends ArrayAdapter<QuoteEntity> {
     private Context context;
     private int resource;
 
-    QuotesAdapter(@NonNull List<QuoteEntity> objects, int resource, @NonNull Context context) {
+    public QuotesAdapter(@NonNull List<QuoteEntity> objects, int resource, @NonNull Context context) {
         super(context, resource, objects);
         this.context = context;
         this.resource = resource;

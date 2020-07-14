@@ -29,6 +29,7 @@ import com.axbg.crimson.BuildConfig;
 import com.axbg.crimson.R;
 import com.axbg.crimson.databinding.FragmentQuoteDetailBinding;
 import com.axbg.crimson.db.entity.QuoteEntity;
+import com.axbg.crimson.ui.UIHelper;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
@@ -107,6 +108,8 @@ public class QuoteDetailFragment extends Fragment {
     }
 
     private void bindLayout() {
+        binding.fragmentQuoteDetailText.setOnFocusChangeListener(UIHelper.getOutOfFocusListener(requireActivity(), requireView()));
+
         binding.fragmentQuoteDetailCamera.setOnClickListener(v -> {
             if (ContextCompat.checkSelfPermission(
                     requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
@@ -162,10 +165,6 @@ public class QuoteDetailFragment extends Fragment {
 
         binding.fragmentQuoteDetailBook.setText(bookTitle);
 
-        binding.fragmentQuoteDetailText.setCursorVisible(false);
-        binding.fragmentQuoteDetailText.setOnClickListener((view) ->
-                binding.fragmentQuoteDetailText.setCursorVisible(true));
-
         AsyncTask.execute(() -> {
             existingQuote = quotesViewModel.getQuoteDao().getById(quoteId);
 
@@ -219,7 +218,6 @@ public class QuoteDetailFragment extends Fragment {
     }
 
     /* Image processing */
-
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private void takePictureFromCamera() {
         File tempPicture = new File(requireContext().getFilesDir(), "temp.png");
