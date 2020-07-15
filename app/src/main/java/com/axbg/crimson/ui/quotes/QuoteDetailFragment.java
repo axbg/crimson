@@ -12,12 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
@@ -25,11 +22,11 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.axbg.crimson.BuildConfig;
 import com.axbg.crimson.R;
 import com.axbg.crimson.databinding.FragmentQuoteDetailBinding;
 import com.axbg.crimson.db.entity.QuoteEntity;
-import com.axbg.crimson.ui.UIHelper;
+import com.axbg.crimson.utility.ImageProcessor;
+import com.axbg.crimson.utility.UIHelper;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
@@ -37,7 +34,6 @@ import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -51,29 +47,6 @@ public class QuoteDetailFragment extends Fragment {
     private long bookId = 0;
     private Uri quotePicture;
     private QuoteEntity existingQuote;
-
-    private ActivityResultLauncher<Uri> takePicture = registerForActivityResult(new ActivityResultContracts.TakePicture(),
-            saved -> {
-                if (saved) {
-                    cropPicture();
-                }
-            });
-
-    private ActivityResultLauncher<String> galleryPick = registerForActivityResult(new ActivityResultContracts.GetContent(),
-            uri -> {
-                quotePicture = uri;
-                cropPicture();
-            });
-
-    private ActivityResultLauncher<String> requestPermissionLauncher =
-            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
-                if (isGranted) {
-                    takePictureFromCamera();
-                } else {
-                    Toast.makeText(requireContext(), R.string.CAMERA_PERMISSION_MESSAGE, Toast.LENGTH_SHORT)
-                            .show();
-                }
-            });
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -113,13 +86,18 @@ public class QuoteDetailFragment extends Fragment {
         binding.fragmentQuoteDetailCamera.setOnClickListener(v -> {
             if (ContextCompat.checkSelfPermission(
                     requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                takePictureFromCamera();
+                try {
+                    ImageProcessor.takePictureFromCamera(this, requireActivity(), requireContext());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             } else {
-                requestPermissionLauncher.launch(Manifest.permission.CAMERA);
+                ImageProcessor.requestCameraPermissionLauncher(this, requireActivity(), requireContext());
             }
         });
 
-        binding.fragmentQuoteDetailGallery.setOnClickListener(v -> galleryPick.launch("image/*"));
+        binding.fragmentQuoteDetailGallery.setOnClickListener(v ->
+                ImageProcessor.pickPictureFromGallery(this, requireActivity(), requireContext()));
 
         bindBookSelectListener();
 
@@ -217,42 +195,6 @@ public class QuoteDetailFragment extends Fragment {
         bookTitleListener.observe(getViewLifecycleOwner(), (bookTitle) -> binding.fragmentQuoteDetailBook.setText(bookTitle));
     }
 
-    /* Image processing */
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    private void takePictureFromCamera() {
-        File tempPicture = new File(requireContext().getFilesDir(), "temp.png");
-
-        try {
-            if (!tempPicture.exists()) {
-                tempPicture.createNewFile();
-            }
-
-            Uri uri = FileProvider.getUriForFile(requireActivity(), BuildConfig.APPLICATION_ID.concat(".provider"),
-                    tempPicture);
-
-            quotePicture = uri;
-            takePicture.launch(uri);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void cropPicture() {
-        CropImage.activity(quotePicture)
-                .start(requireContext(), this);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                quotePicture = CropImage.getActivityResult(data).getUri();
-                detectText();
-            }
-        }
-    }
-
     private void detectText() {
         try {
             InputImage quoteTempImage = InputImage.fromFilePath(requireContext(), quotePicture);
@@ -271,6 +213,17 @@ public class QuoteDetailFragment extends Fragment {
         } catch (IOException ignored) {
             Toast.makeText(requireContext(), R.string.ERROR_PHOTO_PROCESSING, Toast.LENGTH_SHORT)
                     .show();
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                quotePicture = CropImage.getActivityResult(data).getUri();
+                detectText();
+            }
         }
     }
 }

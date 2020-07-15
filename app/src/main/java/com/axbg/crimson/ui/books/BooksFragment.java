@@ -37,6 +37,10 @@ public class BooksFragment extends androidx.fragment.app.Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        bindLayout();
+    }
+
+    private void bindLayout() {
         bindAddBookButton();
         bindShimmer();
         bindGridView(books);

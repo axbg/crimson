@@ -1,4 +1,4 @@
-package com.axbg.crimson.ui;
+package com.axbg.crimson.utility;
 
 import android.content.Context;
 import android.view.View;
