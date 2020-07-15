@@ -8,14 +8,22 @@ import androidx.fragment.app.FragmentActivity;
 
 
 public class UIHelper {
-    public static void hideKeyboard(FragmentActivity fragment, View view) {
-        InputMethodManager inputManager = (InputMethodManager) fragment.getSystemService(Context.INPUT_METHOD_SERVICE);
+    public static void hideKeyboard(FragmentActivity fragmentActivity, View view) {
+        InputMethodManager inputManager = (InputMethodManager) fragmentActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (inputManager != null) {
             inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
 
-    public static View.OnFocusChangeListener getOutOfFocusListener(FragmentActivity fragment, View view) {
-        return (listenerView, hasFocus) -> hideKeyboard(fragment, view);
+    public static View.OnFocusChangeListener getOutOfFocusListener(FragmentActivity fragmentActivity, View view) {
+        return (listenerView, hasFocus) -> hideKeyboard(fragmentActivity, view);
+    }
+
+    public static void toggleView(boolean state, int layoutId, FragmentActivity fragmentActivity) {
+        if (state) {
+            fragmentActivity.findViewById(layoutId).setVisibility(View.VISIBLE);
+        } else {
+            fragmentActivity.findViewById(layoutId).setVisibility(View.GONE);
+        }
     }
 }

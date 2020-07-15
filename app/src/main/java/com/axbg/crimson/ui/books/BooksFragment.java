@@ -15,6 +15,7 @@ import androidx.navigation.Navigation;
 import com.axbg.crimson.R;
 import com.axbg.crimson.db.entity.BookEntity;
 import com.axbg.crimson.ui.books.adapter.BooksAdapter;
+import com.axbg.crimson.utility.UIHelper;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -48,6 +49,7 @@ public class BooksFragment extends androidx.fragment.app.Fragment {
         booksViewModel.getLiveDataBooks().observe(getViewLifecycleOwner(), liveBooks -> {
             shimmerLayout.hideShimmerAdapter();
             refreshBooksAdapter(liveBooks);
+            UIHelper.toggleView(liveBooks.isEmpty(), R.id.fragment_books_empty_list, requireActivity());
         });
     }
 

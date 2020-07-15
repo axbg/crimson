@@ -16,6 +16,7 @@ import androidx.navigation.Navigation;
 import com.axbg.crimson.R;
 import com.axbg.crimson.db.entity.QuoteEntity;
 import com.axbg.crimson.ui.quotes.adapter.QuotesAdapter;
+import com.axbg.crimson.utility.UIHelper;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -49,6 +50,7 @@ public class QuotesFragment extends Fragment {
         quotesViewModel.getLiveDataQuotesWithBook().observe(getViewLifecycleOwner(), quoteEntities -> {
             shimmerLayout.hideShimmerAdapter();
             refreshListView(quoteEntities);
+            UIHelper.toggleView(quoteEntities.isEmpty(), R.id.fragment_quotes_empty_list, requireActivity());
         });
     }
 

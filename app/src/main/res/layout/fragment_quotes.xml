@@ -58,4 +58,16 @@
         app:layout_constraintBottom_toBottomOf="@+id/fragment_quotes_list_view"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <ImageView
+        android:id="@+id/fragment_quotes_empty_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/EMPTY_QUOTES_CONTENT_DESCRIPTION"
+        android:src="@drawable/ic_launcher"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

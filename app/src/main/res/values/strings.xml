@@ -46,4 +46,7 @@
     <string name="ERROR_NO_TEXT_DETECTED">No text detected - Please try again</string>
     <string name="ERROR_PHOTO_PROCESSING">Error occurred during photo processing</string>
 
+    <string name="EMPTY_QUOTES_CONTENT_DESCRIPTION">No quotes saved</string>
+    <string name="EMPTY_BOOKS_CONTENT_DESCRIPTION">No books saved</string>
+
 </resources>
