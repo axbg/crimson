@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -147,6 +148,10 @@ public class QuoteDetailFragment extends Fragment {
             existingQuote = quotesViewModel.getQuoteDao().getById(quoteId);
 
             if (existingQuote != null) {
+                if (Looper.myLooper() == null) {
+                    Looper.prepare();
+                }
+
                 binding.fragmentQuoteDetailText.setText(existingQuote.getText());
                 binding.fragmentQuoteDetailAdded.setText(existingQuote.getAddedAt().toString());
             }

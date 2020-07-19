@@ -20,8 +20,8 @@
 
     <com.cooltechworks.views.shimmer.ShimmerRecyclerView
         android:id="@+id/fragment_quotes_shimmer"
-        android:layout_width="385dp"
-        android:layout_height="659dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,8 +36,8 @@
 
     <ListView
         android:id="@+id/fragment_quotes_list_view"
-        android:layout_width="385dp"
-        android:layout_height="659dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,7 +55,7 @@
         android:clickable="true"
         android:src="@android:drawable/ic_menu_add"
         app:backgroundTint="@color/primaryPurple"
-        app:layout_constraintBottom_toBottomOf="@+id/fragment_quotes_list_view"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
@@ -63,7 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/EMPTY_QUOTES_CONTENT_DESCRIPTION"
-        android:src="@drawable/ic_launcher"
+        android:src="@drawable/no_quotes"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
