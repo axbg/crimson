@@ -42,7 +42,6 @@ public class ImageProcessor {
         }
 
         Uri picture = FileProvider.getUriForFile(fragmentActivity, BuildConfig.APPLICATION_ID.concat(".provider"), tempPicture);
-
         takePicture(fragment, fragmentActivity, context, picture);
     }
 
@@ -61,6 +60,8 @@ public class ImageProcessor {
     }
 
     private static void cropPicture(Uri picture, Context context, Fragment fragment) {
-        CropImage.activity(picture).start(context, fragment);
+        if (picture != null) {
+            CropImage.activity(picture).start(context, fragment);
+        }
     }
 }
