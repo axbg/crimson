@@ -2,9 +2,11 @@ package com.axbg.crimson.ui.books;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +19,7 @@ import com.axbg.crimson.db.entity.BookEntity;
 import com.axbg.crimson.ui.books.adapter.BooksAdapter;
 import com.axbg.crimson.utility.UIHelper;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -49,6 +52,7 @@ public class BooksFragment extends androidx.fragment.app.Fragment {
         booksViewModel.getLiveDataBooks().observe(getViewLifecycleOwner(), liveBooks -> {
             shimmerLayout.hideShimmerAdapter();
             refreshBooksAdapter(liveBooks);
+            toggleQuoteMenuItem(liveBooks.isEmpty());
             UIHelper.toggleView(liveBooks.isEmpty(), R.id.fragment_books_empty_list, requireActivity());
         });
     }
@@ -59,6 +63,11 @@ public class BooksFragment extends androidx.fragment.app.Fragment {
             NavController nav = Navigation.findNavController(requireActivity(), R.id.activity_landing_nav_host_fragment);
             nav.navigate(BooksFragmentDirections.createBookAction());
         });
+    }
+
+    private void bindShimmer() {
+        shimmerLayout = requireView().findViewById(R.id.fragment_books_shimmer);
+        shimmerLayout.showShimmerAdapter();
     }
 
     private void bindGridView(List<BookEntity> books) {
@@ -84,9 +93,22 @@ public class BooksFragment extends androidx.fragment.app.Fragment {
 
     }
 
-    private void bindShimmer() {
-        shimmerLayout = requireView().findViewById(R.id.fragment_books_shimmer);
-        shimmerLayout.showShimmerAdapter();
+    private void toggleQuoteMenuItem(boolean isEmpty) {
+        BottomNavigationView navView = requireActivity().findViewById(R.id.activity_landing_nav_view);
+
+        if (navView != null) {
+            MenuItem quoteMenu = navView.getMenu().getItem(0);
+            ImageView addQuotesImage = requireActivity().findViewById(R.id.fragment_books_add_quotes);
+
+            if (isEmpty && quoteMenu.isEnabled()) {
+                navView.getMenu().getItem(0).setEnabled(false);
+            } else if (!isEmpty && !quoteMenu.isEnabled()) {
+                navView.getMenu().getItem(0).setEnabled(true);
+                addQuotesImage.setVisibility(View.VISIBLE);
+            } else if (addQuotesImage.getVisibility() == View.VISIBLE) {
+                addQuotesImage.setVisibility(View.GONE);
+            }
+        }
     }
 
     private void refreshBooksAdapter(List<BookEntity> newBooks) {

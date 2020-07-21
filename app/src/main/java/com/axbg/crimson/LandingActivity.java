@@ -30,6 +30,10 @@ public class LandingActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.activity_landing_nav_view);
         NavController navController = Navigation.findNavController(this, R.id.activity_landing_nav_host_fragment);
         NavigationUI.setupWithNavController(navView, navController);
+
+        navView.setOnNavigationItemReselectedListener((item) -> {
+            // do nothing
+        });
     }
 
     private void bindViewModels() {

@@ -104,7 +104,7 @@ public class BookDetailFragment extends Fragment {
                     }
 
                     Navigation.findNavController(requireActivity(), R.id.activity_landing_nav_host_fragment)
-                            .navigate(R.id.navigation_books);
+                            .popBackStack();
                 });
             }
         });
@@ -127,8 +127,8 @@ public class BookDetailFragment extends Fragment {
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setPositiveButton(R.string.DIALOG_YES, (dialog, which) -> {
                             AsyncTask.execute(() -> booksViewModel.getBookDao().delete(bookId));
-                            NavController nav = Navigation.findNavController(requireActivity(), R.id.activity_landing_nav_host_fragment);
-                            nav.popBackStack();
+                            Navigation.findNavController(requireActivity(), R.id.activity_landing_nav_host_fragment)
+                                    .popBackStack();
                         })
                         .setNegativeButton(R.string.DIALOG_NO, null)
                         .show());

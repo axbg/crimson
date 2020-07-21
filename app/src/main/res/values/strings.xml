@@ -48,5 +48,6 @@
 
     <string name="EMPTY_QUOTES_CONTENT_DESCRIPTION">No quotes saved</string>
     <string name="EMPTY_BOOKS_CONTENT_DESCRIPTION">No books saved</string>
+    <string name="ADD_QUOTES_CONTENT_DESCRIPTION">Add quotes</string>
 
 </resources>

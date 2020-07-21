@@ -20,10 +20,14 @@ public class UIHelper {
     }
 
     public static void toggleView(boolean state, int layoutId, FragmentActivity fragmentActivity) {
-        if (state) {
-            fragmentActivity.findViewById(layoutId).setVisibility(View.VISIBLE);
-        } else {
-            fragmentActivity.findViewById(layoutId).setVisibility(View.GONE);
+        View toggledView = fragmentActivity.findViewById(layoutId);
+
+        if (toggledView != null) {
+            if (state) {
+                toggledView.setVisibility(View.VISIBLE);
+            } else {
+                toggledView.setVisibility(View.GONE);
+            }
         }
     }
 }
