@@ -36,14 +36,14 @@
         app:shimmer_demo_layout="@layout/shimmer_adapter_books"
         app:shimmer_demo_layout_manager_type="grid" />
 
-    <GridView
-        android:id="@+id/fragment_books_grid_view"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_books_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:clipToPadding="false"
         android:columnWidth="120dp"
-        android:drawSelectorOnTop="false"
+        android:drawSelectorOnTop="true"
         android:gravity="center"
         android:numColumns="auto_fit"
         android:paddingBottom="90dp"
