@@ -106,8 +106,10 @@ public class CoverFragment extends Fragment {
             UIHelper.hideKeyboard(requireActivity(), requireView());
 
             if (clear) {
-                showShimmer();
+                UIHelper.toggleViewIfOpposite(false, R.id.fragment_cover_search_book, requireActivity());
+                UIHelper.toggleViewIfOpposite(false, R.id.fragment_cover_no_books_found, requireActivity());
                 refreshBooksAdapter(null, true);
+                showShimmer();
             }
 
             VolleyManager.getInstance(requireContext()).addToQueue(request);
@@ -183,6 +185,10 @@ public class CoverFragment extends Fragment {
 
             if (newBooks != null) {
                 books.addAll(newBooks);
+
+                if (books.isEmpty()) {
+                    UIHelper.toggleView(true, R.id.fragment_cover_no_books_found, requireActivity());
+                }
             }
 
             booksAdapter.notifyDataSetChanged();

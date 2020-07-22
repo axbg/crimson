@@ -30,4 +30,13 @@ public class UIHelper {
             }
         }
     }
+
+    public static void toggleViewIfOpposite(boolean state, int layoutId, FragmentActivity fragmentActivity) {
+        View toggledView = fragmentActivity.findViewById(layoutId);
+
+        if (toggledView != null &&
+                ((toggledView.getVisibility() == View.GONE && state) || (toggledView.getVisibility() == View.VISIBLE && !state))) {
+            toggleView(state, layoutId, fragmentActivity);
+        }
+    }
 }

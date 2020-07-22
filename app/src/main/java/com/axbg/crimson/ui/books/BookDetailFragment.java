@@ -226,19 +226,19 @@ public class BookDetailFragment extends Fragment {
         binding.fragmentBookDetailAuthorText.setError(null);
 
         if (((imageUrl == null || imageUrl.isEmpty()) && existingBook == null) && !createdCustomCover) {
-            Toast.makeText(requireContext(), String.valueOf(R.string.ERROR_COVER_IMAGE_EMPTY), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), requireActivity().getString(R.string.ERROR_COVER_IMAGE_EMPTY), Toast.LENGTH_SHORT).show();
             return null;
         }
 
         String title = Objects.requireNonNull(binding.fragmentBookDetailTitleText.getText()).toString();
         if (title.isEmpty()) {
-            binding.fragmentBookDetailTitleText.setError(String.valueOf(R.string.ERROR_TITLE_EMPTY));
+            binding.fragmentBookDetailTitleText.setError(requireActivity().getString(R.string.ERROR_TITLE_EMPTY));
             return null;
         }
 
         String author = Objects.requireNonNull(binding.fragmentBookDetailAuthorText.getText()).toString();
         if (author.isEmpty()) {
-            binding.fragmentBookDetailAuthorText.setError(String.valueOf(R.string.ERROR_AUTHOR_EMPTY));
+            binding.fragmentBookDetailAuthorText.setError(requireActivity().getString(R.string.ERROR_AUTHOR_EMPTY));
             return null;
         }
 

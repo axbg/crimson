@@ -8,11 +8,13 @@
 
     <string name="QUOTE">Quote</string>
     <string name="QUOTES">Quotes</string>
+    <string name="QUOTE_MARKED_TEXT">\"%1$s\"</string>
     <string name="FAVORITE_QUOTES">Favorite Quotes</string>
     <string name="QUOTES_PER_BOOK">Quotes / Book</string>
     <string name="REMOVE_QUOTE">Removing Quote</string>
 
     <string name="BOOK">Book</string>
+    <string name="CLICK_BOOK">Click to select book</string>
     <string name="BOOKS">Books</string>
     <string name="FAVORITE_BOOKS">Favorite Books</string>
     <string name="REMOVE_BOOK">Removing Book</string>
@@ -37,8 +39,8 @@
         Its quotes will also be removed</string>
 
     <string name="ERROR_TITLE_EMPTY">Title cannot be empty</string>
-    <string name="ERROR_AUTHOR_EMPTY">Cover image cannot be empty</string>
-    <string name="ERROR_COVER_IMAGE_EMPTY">Author cannot be empty</string>
+    <string name="ERROR_AUTHOR_EMPTY">Author cannot be empty</string>
+    <string name="ERROR_COVER_IMAGE_EMPTY">Cover image cannot be empty</string>
     <string name="ERROR_QUERY_EMPTY">Search query cannot be empty</string>
     <string name="ERROR_CONNECTION">Error occurred during connection</string>
     <string name="ERROR_QUOTE_EMPTY">Quote text cannot be empty</string>
@@ -49,5 +51,7 @@
     <string name="EMPTY_QUOTES_CONTENT_DESCRIPTION">No quotes saved</string>
     <string name="EMPTY_BOOKS_CONTENT_DESCRIPTION">No books saved</string>
     <string name="ADD_QUOTES_CONTENT_DESCRIPTION">Add quotes</string>
+    <string name="SEARCH_BOOKS_DESCRIPTION">Search for books online</string>
+    <string name="NO_BOOKS_FOUND">No books were found</string>
 
 </resources>

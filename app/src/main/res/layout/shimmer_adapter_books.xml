@@ -21,9 +21,9 @@
     <TextView
         android:id="@+id/shimmer_adapter_books_title"
         android:layout_width="82dp"
-        android:layout_height="21dp"
+        android:layout_height="25dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="30dp"
         android:background="@color/shimmerGray"
         android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"

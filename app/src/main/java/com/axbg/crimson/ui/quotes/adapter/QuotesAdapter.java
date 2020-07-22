@@ -52,7 +52,7 @@ public class QuotesAdapter extends ArrayAdapter<QuoteEntity> {
         }
 
         if (quote != null) {
-            viewHolder.quote.setText(quote.getShortText());
+            viewHolder.quote.setText(convertView.getResources().getString(R.string.QUOTE_MARKED_TEXT, quote.getShortText()));
             viewHolder.book.setText(getBookTitle(quote.getBook()));
             viewHolder.date.setText(quote.getAddedAt().toString());
         }

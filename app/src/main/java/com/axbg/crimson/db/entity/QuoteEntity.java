@@ -56,6 +56,6 @@ public class QuoteEntity {
     @NotNull
     @Override
     public String toString() {
-        return getShortText();
+        return "\"" + getShortText() + "\"";
     }
 }

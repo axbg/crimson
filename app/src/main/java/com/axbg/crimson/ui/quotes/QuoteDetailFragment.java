@@ -102,7 +102,7 @@ public class QuoteDetailFragment extends Fragment {
 
         bindBookSelectListener();
 
-        binding.fragmentQuoteDetailBookUpdateButton.setOnClickListener(v ->
+        binding.fragmentQuoteDetailBook.setOnClickListener((v) ->
                 NavHostFragment.findNavController(this).navigate(
                         QuoteDetailFragmentDirections.selectBookAction()
                 ));
@@ -163,13 +163,14 @@ public class QuoteDetailFragment extends Fragment {
 
         String text = binding.fragmentQuoteDetailText.getText().toString();
         if (text.isEmpty()) {
-            binding.fragmentQuoteDetailText.setError(String.valueOf(R.string.ERROR_QUOTE_EMPTY));
+            binding.fragmentQuoteDetailText.setError(requireActivity().getText(R.string.ERROR_QUOTE_EMPTY));
             return null;
         }
 
         binding.fragmentQuoteDetailBook.setError(null);
         if (bookId == 0 && existingQuote == null) {
-            binding.fragmentQuoteDetailBook.setError(String.valueOf(R.string.ERROR_BOOK_EMPTY));
+            binding.fragmentQuoteDetailBook.setError(requireActivity().getText(R.string.ERROR_BOOK_EMPTY));
+            Toast.makeText(requireContext(), requireActivity().getText(R.string.ERROR_BOOK_EMPTY), Toast.LENGTH_SHORT).show();
             return null;
         }
 

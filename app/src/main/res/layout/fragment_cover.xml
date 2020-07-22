@@ -8,6 +8,34 @@
     android:visibility="visible"
     tools:context=".ui.books.CoverFragment">
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/fragment_cover_search_input"
+        android:layout_width="316dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/fragment_cover_search_input_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/SEARCH_COVER"
+            android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/fragment_cover_search_button"
+        android:layout_width="311dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/SEARCH"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_cover_search_input" />
+
     <com.cooltechworks.views.shimmer.ShimmerRecyclerView
         android:id="@+id/fragment_cover_shimmer"
         android:layout_width="match_parent"
@@ -31,10 +59,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:clipToPadding="false"
         android:columnWidth="120dp"
         android:drawSelectorOnTop="true"
         android:gravity="center"
         android:numColumns="auto_fit"
+        android:paddingBottom="90dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,31 +83,27 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/fragment_cover_search_input"
-        android:layout_width="316dp"
+    <ImageView
+        android:id="@+id/fragment_cover_search_book"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:contentDescription="@string/SEARCH_BOOKS_DESCRIPTION"
+        android:src="@drawable/search_book"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/fragment_cover_search_input_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/SEARCH_COVER"
-            android:textSize="16sp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <Button
-        android:id="@+id/fragment_cover_search_button"
-        android:layout_width="311dp"
+    <ImageView
+        android:id="@+id/fragment_cover_no_books_found"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/SEARCH"
+        android:contentDescription="@string/NO_BOOKS_FOUND"
+        android:src="@drawable/no_books_found"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_cover_search_input" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
