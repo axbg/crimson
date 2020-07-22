@@ -1,5 +1,6 @@
 package com.axbg.crimson.utility;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -38,5 +39,12 @@ public class UIHelper {
                 ((toggledView.getVisibility() == View.GONE && state) || (toggledView.getVisibility() == View.VISIBLE && !state))) {
             toggleView(state, layoutId, fragmentActivity);
         }
+    }
+
+    public static AlertDialog.Builder getAlertDialogBuilder(Context context, int title, int message) {
+        return new AlertDialog.Builder(context)
+                .setTitle(title)
+                .setMessage(message)
+                .setIcon(android.R.drawable.ic_dialog_alert);
     }
 }

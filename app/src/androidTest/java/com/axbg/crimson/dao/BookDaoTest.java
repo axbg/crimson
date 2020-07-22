@@ -20,6 +20,8 @@ import org.junit.rules.TestRule;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -127,6 +129,22 @@ public class BookDaoTest {
 
         assertEquals(1, result);
         assertNull(updatedBookEntity);
+    }
+
+    @Test
+    public void deleteAll() {
+        AtomicBoolean initialized = new AtomicBoolean(false);
+
+        LiveData<List<BookEntity>> books = db.bookDao().getAll();
+        books.observeForever(bookEntities -> {
+            if (!initialized.getAndSet(true)) {
+                assertEquals(NO_OF_BOOKS, Objects.requireNonNull(books.getValue()).size());
+            } else {
+                assertEquals(0, Objects.requireNonNull(books.getValue()).size());
+            }
+        });
+
+        db.bookDao().deleteAll();
     }
 
     @After

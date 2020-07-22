@@ -1,6 +1,5 @@
 package com.axbg.crimson.ui.books;
 
-import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -121,10 +120,7 @@ public class BookDetailFragment extends Fragment {
         binding.fragmentBookDetailQuotes.setVisibility(View.VISIBLE);
         binding.fragmentBookDetailRemoveButton.setVisibility(View.VISIBLE);
         binding.fragmentBookDetailRemoveButton.setOnClickListener(v ->
-                new AlertDialog.Builder(requireContext())
-                        .setTitle(R.string.REMOVE_BOOK)
-                        .setMessage(R.string.REMOVE_BOOK_MESSAGE)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
+                UIHelper.getAlertDialogBuilder(requireContext(), R.string.REMOVE_BOOK, R.string.REMOVE_BOOK_MESSAGE)
                         .setPositiveButton(R.string.DIALOG_YES, (dialog, which) -> {
                             AsyncTask.execute(() -> booksViewModel.getBookDao().delete(bookId));
                             Navigation.findNavController(requireActivity(), R.id.activity_landing_nav_host_fragment)

@@ -21,6 +21,7 @@ import org.junit.rules.TestRule;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -110,6 +111,22 @@ public class QuoteDaoTest {
 
         assertEquals(1, result);
         assertNull(updatedQuoteEntity);
+    }
+
+    @Test
+    public void deleteAll() {
+        AtomicBoolean initialized = new AtomicBoolean(false);
+
+        LiveData<List<QuoteEntity>> quotes = db.quoteDao().getAll();
+        quotes.observeForever(quoteEntities -> {
+            if (!initialized.getAndSet(true)) {
+                assertEquals(NO_OF_QUOTES, quoteEntities.size());
+            } else {
+                assertEquals(0, quoteEntities.size());
+            }
+        });
+
+        db.quoteDao().deleteAll();
     }
 
     @After

@@ -38,10 +38,11 @@
         android:id="@+id/fragment_statistics_quotes_no_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="64dp"
         android:text="@string/QUOTES"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/fragment_statistics_quotes_rate_label"
+        app:layout_constraintHorizontal_bias="0.441"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_profile_picture" />
 
@@ -49,10 +50,11 @@
         android:id="@+id/fragment_statistics_quotes_no"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:text="@string/NUMBER_PLACEHOLDER"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintEnd_toStartOf="@+id/fragment_statistics_quotes_rate"
+        app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_quotes_no_label" />
 
@@ -60,43 +62,79 @@
         android:id="@+id/fragment_statistics_books_no_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="64dp"
         android:text="@string/BOOKS"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.881"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_quotes_no" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_profile_picture" />
 
     <TextView
         android:id="@+id/fragment_statistics_books_no"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:text="@string/NUMBER_PLACEHOLDER"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.671"
+        app:layout_constraintStart_toEndOf="@+id/fragment_statistics_quotes_rate"
         app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_books_no_label" />
 
     <TextView
         android:id="@+id/fragment_statistics_quotes_rate_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="64dp"
         android:text="@string/QUOTES_PER_BOOK"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_books_no" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_profile_picture" />
 
     <TextView
         android:id="@+id/fragment_statistics_quotes_rate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="@string/NUMBER_PLACEHOLDER"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_quotes_rate_label" />
+
+    <Button
+        android:id="@+id/fragment_statistics_import"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="184dp"
+        android:text="@string/IMPORT_LIBRARY"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_profile_picture" />
+
+    <Button
+        android:id="@+id/fragment_statistics_export"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="184dp"
+        android:text="@string/EXPORT_LIBRARY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/fragment_statistics_import"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_profile_picture" />
+
+    <Button
+        android:id="@+id/fragment_statistics_reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="280dp"
+        android:text="@string/RESET_LIBRARY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_profile_picture" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

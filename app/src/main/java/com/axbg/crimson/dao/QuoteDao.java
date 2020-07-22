@@ -32,4 +32,7 @@ public interface QuoteDao {
 
     @Query("DELETE FROM quotes WHERE id = :id")
     int delete(long id);
+
+    @Query("DELETE FROM quotes")
+    void deleteAll();
 }

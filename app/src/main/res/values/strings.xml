@@ -20,6 +20,9 @@
     <string name="REMOVE_BOOK">Removing Book</string>
 
     <string name="STATISTICS">Statistics</string>
+    <string name="IMPORT_LIBRARY">Import Library</string>
+    <string name="EXPORT_LIBRARY">Export Library</string>
+    <string name="RESET_LIBRARY">Reset Library</string>
 
     <string name="TITLE">Title</string>
     <string name="AUTHOR">Author</string>
@@ -37,6 +40,9 @@
     <string name="REMOVE_QUOTE_MESSAGE">Are you sure you want to remove this quote?</string>
     <string name="REMOVE_BOOK_MESSAGE">Are you sure you want to remove this book?
         Its quotes will also be removed</string>
+    <string name="RESET_LIBRARY_MESSAGE">Are you sure you want to reset your library?
+    Be aware that the action cannot be undone</string>
+    <string name="RESET_LIBRARY_CONFIRMATION">Are you really sure?</string>
 
     <string name="ERROR_TITLE_EMPTY">Title cannot be empty</string>
     <string name="ERROR_AUTHOR_EMPTY">Author cannot be empty</string>

@@ -36,4 +36,7 @@ public interface BookDao {
 
     @Query("DELETE FROM books WHERE id = :id")
     int delete(long id);
+
+    @Query("DELETE FROM books")
+    void deleteAll();
 }

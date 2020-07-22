@@ -78,6 +78,15 @@
         app:layout_constraintTop_toBottomOf="@+id/fragment_quote_detail_text"
         app:srcCompat="@android:drawable/ic_menu_gallery" />
 
+    <TextView
+        android:id="@+id/fragment_quote_book_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:text="@string/BOOK"
+        app:layout_constraintBottom_toTopOf="@+id/fragment_quote_detail_book"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <Button
         android:id="@+id/fragment_quote_detail_add_button"
         android:layout_width="wrap_content"
@@ -100,5 +109,6 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragment_quote_detail_added" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
