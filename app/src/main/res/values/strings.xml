@@ -23,6 +23,8 @@
     <string name="IMPORT_LIBRARY">Import Library</string>
     <string name="EXPORT_LIBRARY">Export Library</string>
     <string name="RESET_LIBRARY">Reset Library</string>
+    <string name="EXPORT_LIBRARY_SUCCESS">Library was successfully exported</string>
+    <string name="IMPORT_LIBRARY_SUCCESS">Library was successfully imported</string>
 
     <string name="TITLE">Title</string>
     <string name="AUTHOR">Author</string>
@@ -53,6 +55,8 @@
     <string name="ERROR_BOOK_EMPTY">You should select a book first!</string>
     <string name="ERROR_NO_TEXT_DETECTED">No text detected - Please try again</string>
     <string name="ERROR_PHOTO_PROCESSING">Error occurred during photo processing</string>
+    <string name="ERROR_EXPORT_FILE">Error occurred during library export. Please try again.</string>
+    <string name="ERROR_IMPORT_FILE">Error occurred during library import. File may be corrupted.</string>
 
     <string name="EMPTY_QUOTES_CONTENT_DESCRIPTION">No quotes saved</string>
     <string name="EMPTY_BOOKS_CONTENT_DESCRIPTION">No books saved</string>

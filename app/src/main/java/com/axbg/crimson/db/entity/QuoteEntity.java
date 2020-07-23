@@ -12,6 +12,7 @@ import com.axbg.crimson.db.Converters;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import lombok.Data;
@@ -30,7 +31,9 @@ import static androidx.room.ForeignKey.CASCADE;
                 childColumns = "book_id",
                 onDelete = CASCADE),
         indices = {@Index("book_id")})
-public class QuoteEntity {
+public class QuoteEntity implements Serializable {
+    private static final long serialVersionUID = 4997398207002581287L;
+
     @PrimaryKey(autoGenerate = true)
     private long id;
 

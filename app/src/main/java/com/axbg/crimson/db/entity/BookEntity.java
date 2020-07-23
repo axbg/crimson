@@ -7,6 +7,7 @@ import androidx.room.TypeConverters;
 
 import com.axbg.crimson.db.Converters;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import lombok.Data;
@@ -18,7 +19,9 @@ import lombok.RequiredArgsConstructor;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Entity(tableName = "books")
-public class BookEntity {
+public class BookEntity implements Serializable {
+    private static final long serialVersionUID = -3854175523661032053L;
+
     @PrimaryKey(autoGenerate = true)
     private long id;
 
