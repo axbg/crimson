@@ -29,6 +29,7 @@
         android:layout_width="327dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
+        app:hintAnimationEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragment_book_detail_cover">
@@ -45,6 +46,7 @@
         android:layout_width="328dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
+        app:hintAnimationEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragment_book_detail_title">

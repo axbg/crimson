@@ -55,14 +55,14 @@ public class StatisticsFragment extends Fragment {
     private ActivityResultLauncher<String> createDocument = registerForActivityResult(new ActivityResultContracts.CreateDocument(),
             uri -> {
                 if (uri != null) {
-                    exportFile(uri);
+                    exportLibrary(uri);
                 }
             });
 
     private ActivityResultLauncher<String> getDocument = registerForActivityResult(new ActivityResultContracts.GetContent(),
             uri -> {
                 if (uri != null) {
-                    importFile(uri);
+                    importLibrary(uri);
                 }
             });
 
@@ -111,12 +111,20 @@ public class StatisticsFragment extends Fragment {
 
                     if (quotes.size() != 0) {
                         toggleQuoteMenuItem(true);
+                        binding.fragmentStatisticsExport.setEnabled(true);
+                    } else {
+                        binding.fragmentStatisticsExport.setEnabled(false);
                     }
                 });
     }
 
     private void bindImport() {
-        binding.fragmentStatisticsImport.setOnClickListener((v) -> getDocument.launch("*/*"));
+        binding.fragmentStatisticsImport.setOnClickListener((v) ->
+                UIHelper.getAlertDialogBuilder(requireContext(), R.string.IMPORT_LIBRARY_DIALOG_TITLE, R.string.IMPORT_LIBRARY_MESSAGE)
+                        .setPositiveButton(R.string.DIALOG_YES, (dialog, which) ->
+                                getDocument.launch("*/*"))
+                        .setNegativeButton(R.string.DIALOG_NO, null)
+                        .show());
     }
 
     private void bindExport() {
@@ -131,6 +139,7 @@ public class StatisticsFragment extends Fragment {
                                 UIHelper.getAlertDialogBuilder(requireContext(), R.string.RESET_LIBRARY, R.string.RESET_LIBRARY_CONFIRMATION)
                                         .setPositiveButton(R.string.DIALOG_YES, (secondDialog, secondWhich) -> {
                                             AsyncTask.execute(() -> {
+                                                books.forEach(book -> deleteFile(book.getCoverPath()));
                                                 quotesViewModel.getQuoteDao().deleteAll();
                                                 booksViewModel.getBookDao().deleteAll();
                                             });
@@ -144,7 +153,7 @@ public class StatisticsFragment extends Fragment {
 
     @SuppressLint("StaticFieldLeak")
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    private void exportFile(Uri uri) {
+    private void exportLibrary(Uri uri) {
         AsyncTask<Void, String, Void> exportFileAsyncTask = new AsyncTask<Void, String, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
@@ -177,9 +186,8 @@ public class StatisticsFragment extends Fragment {
                     Objects.requireNonNull(outputStream).close();
 
                     publishProgress(requireContext().getString(R.string.EXPORT_LIBRARY_SUCCESS));
-                } catch (IOException e) {
+                } catch (IOException ignored) {
                     publishProgress(requireContext().getString(R.string.ERROR_EXPORT_FILE));
-                    e.printStackTrace();
                 }
 
                 return null;
@@ -195,7 +203,7 @@ public class StatisticsFragment extends Fragment {
     }
 
     @SuppressLint("StaticFieldLeak")
-    private void importFile(Uri uri) {
+    private void importLibrary(Uri uri) {
         AsyncTask<Void, String, Void> importFileAsyncTask = new AsyncTask<Void, String, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
@@ -227,9 +235,8 @@ public class StatisticsFragment extends Fragment {
                     importToDatabase(bookIdOffset, importedBooks, quoteIdOffset, importedQuotes);
 
                     publishProgress(requireContext().getString(R.string.IMPORT_LIBRARY_SUCCESS));
-                } catch (IOException | ClassNotFoundException e) {
+                } catch (IOException | ClassNotFoundException ignored) {
                     publishProgress(requireContext().getString(R.string.ERROR_IMPORT_FILE));
-                    e.printStackTrace();
                 }
 
                 return null;
@@ -261,21 +268,24 @@ public class StatisticsFragment extends Fragment {
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    private void saveFile(byte[] cover, String coverPath) {
+    private void deleteFile(String coverPath) {
+        File file = new File(coverPath);
+
+        if (file.exists()) {
+            file.delete();
+        }
+    }
+
+    private void saveFile(byte[] content, String coverPath) {
         try {
-            File coverFile = new File(coverPath);
+            File file = new File(coverPath);
 
-            if (coverFile.exists()) {
-                coverFile.delete();
+            if (file.createNewFile()) {
+                FileOutputStream fileOutputStream = new FileOutputStream(file);
+                fileOutputStream.write(content);
+                fileOutputStream.close();
             }
-
-            coverFile.createNewFile();
-
-            FileOutputStream fileOutputStream = new FileOutputStream(coverFile);
-            fileOutputStream.write(cover);
-            fileOutputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
     }
 

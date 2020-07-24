@@ -25,6 +25,10 @@
     <string name="RESET_LIBRARY">Reset Library</string>
     <string name="EXPORT_LIBRARY_SUCCESS">Library was successfully exported</string>
     <string name="IMPORT_LIBRARY_SUCCESS">Library was successfully imported</string>
+    <string name="IMPORT_LIBRARY_DIALOG_TITLE">Importing library</string>
+    <string name="IMPORT_LIBRARY_MESSAGE">Importing a library will not remove your actual books,
+        but will append new books and quotes to your collection.
+        Are you sure you want to continue the import process?</string>
 
     <string name="TITLE">Title</string>
     <string name="AUTHOR">Author</string>

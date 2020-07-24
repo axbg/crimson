@@ -117,7 +117,6 @@ public class BookDetailFragment extends Fragment {
     }
 
     private void buildViewLayout(long bookId) {
-        binding.fragmentBookDetailQuotes.setVisibility(View.VISIBLE);
         binding.fragmentBookDetailRemoveButton.setVisibility(View.VISIBLE);
         binding.fragmentBookDetailRemoveButton.setOnClickListener(v ->
                 UIHelper.getAlertDialogBuilder(requireContext(), R.string.REMOVE_BOOK, R.string.REMOVE_BOOK_MESSAGE)
@@ -138,10 +137,17 @@ public class BookDetailFragment extends Fragment {
             binding.fragmentBookDetailAuthorText.setText(bookEntity.getAuthor());
             binding.fragmentBookDetailFinished.setChecked(bookEntity.isFinished());
 
-            booksViewModel.getBookDao().getQuotesByBookId(bookId).observe(getViewLifecycleOwner(),
-                    this::refreshQuotesAdapter);
-
             bindQuotesAdapter(quotes, bookEntity.getTitle());
+
+            booksViewModel.getBookDao().getQuotesByBookId(bookId).observe(getViewLifecycleOwner(),
+                    (quotes) -> {
+                        if (!quotes.isEmpty()) {
+                            refreshQuotesAdapter(quotes);
+                            binding.fragmentBookDetailQuotes.setVisibility(View.VISIBLE);
+                        } else {
+                            binding.fragmentBookDetailQuotes.setVisibility(View.GONE);
+                        }
+                    });
         }
     }
 
