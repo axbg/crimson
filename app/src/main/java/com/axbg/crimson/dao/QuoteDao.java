@@ -15,7 +15,7 @@ public interface QuoteDao {
     @Query("SELECT * FROM quotes WHERE id = :id")
     QuoteEntity getById(long id);
 
-    @Query("SELECT * FROM quotes")
+    @Query("SELECT * FROM quotes ORDER BY id DESC")
     LiveData<List<QuoteEntity>> getAll();
 
     @Query("SELECT * FROM quotes WHERE text LIKE '%' || :text || '%'")

@@ -16,7 +16,7 @@ public interface BookDao {
     @Query("SELECT * FROM books WHERE id = :id")
     BookEntity getById(long id);
 
-    @Query("SELECT * FROM books")
+    @Query("SELECT * FROM books ORDER BY id DESC")
     LiveData<List<BookEntity>> getAll();
 
     @Query("SELECT * FROM books WHERE title LIKE '%' || :title || '%' ORDER BY id DESC")
