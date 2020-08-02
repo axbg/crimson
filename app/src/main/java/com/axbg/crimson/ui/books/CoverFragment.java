@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,24 +65,38 @@ public class CoverFragment extends Fragment {
     }
 
     private void bindLayout() {
+        bindSearchInput();
         bindSearchButton();
         bindTakePhotoButton();
         bindShimmer();
         bindRecyclerView();
     }
 
-    private void bindSearchButton() {
-        Button searchButton = requireView().findViewById(R.id.fragment_cover_search_button);
-        searchButton.setOnClickListener(v -> {
-            currentPage = 1;
-            searchOpenLibrary(true);
+    private void bindSearchInput() {
+        TextInputEditText searchInput = binding.fragmentCoverSearchInputText;
+        searchInput.setOnKeyListener((v, keyCode, event) -> {
+            if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                this.executeInitialSearch();
+                return true;
+            }
+
+            return false;
         });
     }
 
+    private void bindSearchButton() {
+        Button searchButton = binding.fragmentCoverSearchButton;
+        searchButton.setOnClickListener(v -> this.executeInitialSearch());
+    }
+
+    private void executeInitialSearch() {
+        currentPage = 1;
+        searchOpenLibrary(true);
+    }
+
     private void searchOpenLibrary(boolean clear) {
-        TextInputEditText searchQueryInput = requireView().findViewById(R.id.fragment_cover_search_input_text);
-        String searchQuery = searchQueryInput.getText() != null ?
-                searchQueryInput.getText().toString() : "";
+        TextInputEditText searchQueryInput = binding.fragmentCoverSearchInputText;
+        String searchQuery = searchQueryInput.getText() != null ? searchQueryInput.getText().toString() : "";
 
         if (!searchQuery.isEmpty()) {
             StringRequest request = new StringRequest(Request.Method.GET, NetworkUtil.buildSearchUrl(searchQuery, currentPage),
@@ -120,7 +135,7 @@ public class CoverFragment extends Fragment {
     }
 
     private void bindTakePhotoButton() {
-        FloatingActionButton addBookFab = requireView().findViewById(R.id.fragment_cover_camera);
+        FloatingActionButton addBookFab = binding.fragmentCoverCamera;
         addBookFab.setOnClickListener(v -> {
             if (ContextCompat.checkSelfPermission(
                     requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
@@ -158,14 +173,13 @@ public class CoverFragment extends Fragment {
             }
         });
 
-        booksAdapter = new OpenBookRecyclerViewAdapter(books,
-                Navigation.findNavController(requireActivity(), R.id.activity_landing_nav_host_fragment));
+        booksAdapter = new OpenBookRecyclerViewAdapter(books, Navigation.findNavController(requireActivity(), R.id.activity_landing_nav_host_fragment));
 
         recyclerView.setAdapter(booksAdapter);
     }
 
     private void bindShimmer() {
-        shimmerLayout = requireView().findViewById(R.id.fragment_cover_shimmer);
+        shimmerLayout = binding.fragmentCoverShimmer;
     }
 
     private void showShimmer() {
@@ -211,8 +225,7 @@ public class CoverFragment extends Fragment {
             }
 
             NavController nav = Navigation.findNavController(requireActivity(), R.id.activity_landing_nav_host_fragment);
-            Objects.requireNonNull(nav.getPreviousBackStackEntry()).
-                    getSavedStateHandle().set("CUSTOM_COVER", coverPath);
+            Objects.requireNonNull(nav.getPreviousBackStackEntry()).getSavedStateHandle().set("CUSTOM_COVER", coverPath);
             nav.popBackStack();
         }
     }

@@ -204,8 +204,7 @@ public class QuoteDetailFragment extends Fragment {
 
             recognizer.process(quoteTempImage)
                     .addOnSuccessListener(text -> {
-                        binding.fragmentQuoteDetailText.setText("");
-                        String extractedText = text.getText();
+                        String extractedText = text.getText().replaceAll("\n", " ");
                         binding.fragmentQuoteDetailText.setText(extractedText);
                         binding.fragmentQuoteDetailText.setSelection(extractedText.length());
                     })
