@@ -47,7 +47,7 @@ public class QuoteEntity implements Serializable {
 
     @NonNull
     @ColumnInfo(name = "book_id")
-    private long bookId;
+    private Long bookId;
 
     @Ignore
     private BookEntity book;
