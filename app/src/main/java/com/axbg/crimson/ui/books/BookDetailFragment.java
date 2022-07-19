@@ -101,10 +101,10 @@ public class BookDetailFragment extends Fragment {
                         synchronizeBooks(existingBook, book);
                         booksViewModel.getBookDao().update(existingBook);
                     }
-
-                    Navigation.findNavController(requireActivity(), R.id.activity_landing_nav_host_fragment)
-                            .popBackStack();
                 });
+
+                Navigation.findNavController(requireActivity(), R.id.activity_landing_nav_host_fragment)
+                        .popBackStack();
             }
         });
 
